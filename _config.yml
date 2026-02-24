@@ -1,0 +1,37 @@
+# Jekyll Configuration
+# Blog converted from Blogger on 2026-02-24
+
+title: The Internet of Stuff and Things
+description: A security research and CTF writeup blog
+
+# URL settings
+url: "https://yourusername.github.io"
+baseurl: ""  # Empty if you're using a GitHub user/org site
+
+# Jekyll defaults
+permalink: /:year/:month/:day/:title/
+timezone: America/New_York
+
+# Theme
+theme: minima
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Author info (used in posts)
+author:
+  name: Igor
+  url: 
+
+# Exclude unnecessary files
+exclude:
+  - .gitignore
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Include dotfiles in build
+include:
+  - .htaccess
