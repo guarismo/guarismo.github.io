@@ -3,6 +3,8 @@ layout: post
 title: "SANS Holiday Hack Challenge 2022 - Tokein RIng"
 date: 2023-01-11T01:14:00.002Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2022, ctf]
 ---
 
 # The Tolkein Ring

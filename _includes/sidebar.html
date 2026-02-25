@@ -1,0 +1,76 @@
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-title">{{ site.title }}</span>
+    <button class="sidebar-close" id="sidebar-close" aria-label="Close menu">&times;</button>
+  </div>
+
+  <ul class="nav-list">
+    {% for item in site.data.navigation %}
+    <li class="nav-item{% if item.children %} has-children{% endif %}">
+
+      {% if item.children %}
+        <a class="nav-link nav-toggle" href="javascript:void(0)" data-toggle="{{ item.title | slugify }}">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.title }}</span>
+          <span class="nav-arrow">▶</span>
+        </a>
+
+        <ul class="nav-children" id="nav-{{ item.title | slugify }}">
+          {% for child in item.children %}
+          <li class="nav-item{% if child.children %} has-children{% endif %}">
+
+            {% if child.url %}
+              <a class="nav-link" href="{{ child.url | relative_url }}">
+                <span class="nav-icon">{{ child.icon }}</span>
+                <span>{{ child.title }}</span>
+              </a>
+            {% endif %}
+
+            {% if child.children %}
+              {% if child.url == nil %}
+              <a class="nav-link nav-toggle" href="javascript:void(0)" data-toggle="{{ child.title | slugify }}">
+                <span class="nav-icon">{{ child.icon }}</span>
+                <span>{{ child.title }}</span>
+                <span class="nav-arrow">▶</span>
+              </a>
+              {% endif %}
+
+              <ul class="nav-children nav-sub" id="nav-{{ child.title | slugify }}">
+                {% for subchild in child.children %}
+                <li class="nav-item">
+                  {% if subchild.url %}
+                    <a class="nav-link" href="{{ subchild.url | relative_url }}">{{ subchild.title }}</a>
+                  {% elsif subchild.tag %}
+                    <a class="nav-link" href="{{ child.url | relative_url }}#{{ subchild.tag }}">{{ subchild.title }}</a>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+          </li>
+          {% endfor %}
+        </ul>
+
+      {% else %}
+        <a class="nav-link" href="{{ item.url | relative_url }}">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.title }}</span>
+        </a>
+      {% endif %}
+
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="sidebar-footer">
+    <small>© {{ 'now' | date: "%Y" }} {{ site.author.name }}</small>
+  </div>
+</nav>
+
+<button class="hamburger" id="hamburger" aria-label="Open menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>

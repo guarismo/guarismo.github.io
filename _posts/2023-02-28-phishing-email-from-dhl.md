@@ -3,6 +3,8 @@ layout: post
 title: "Phishing email from \"DHL\""
 date: 2023-02-28T20:50:00.002Z
 author: gu4r15sm0
+category: misc
+tags: [phishing, email-security]
 ---
 
 \*\*\* DON'T TRY THIS AT HOME/WORK\*\*\*\*

@@ -3,6 +3,8 @@ layout: post
 title: "Jack of Diamonds -  Broken flag and how to fix it"
 date: 2017-01-05T17:11:00.001Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3

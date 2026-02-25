@@ -3,6 +3,8 @@ layout: post
 title: "SANS Holiday Hack Challenge 2022 - Introduction"
 date: 2023-01-10T23:04:00.004Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2022, ctf]
 ---
 
 Once again Santa has invited as to his cyber security conference, KringleCon at the North Pole, and once again... something weird is going on.

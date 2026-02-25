@@ -3,6 +3,8 @@ layout: post
 title: "Playing with the SHAttered PDFs"
 date: 2017-02-27T00:46:00Z
 author: gu4r15sm0
+category: misc
+tags: [cryptography, sha1]
 ---
 
 ## SHA-1 Collision 

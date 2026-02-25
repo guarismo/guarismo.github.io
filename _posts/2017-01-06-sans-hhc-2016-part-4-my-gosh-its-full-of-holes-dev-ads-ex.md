@@ -3,6 +3,8 @@ layout: post
 title: "SANS HHC 2016 - Part 4: My Gosh... It's Full of Holes - Dev / Ads / Ex"
 date: 2017-01-06T16:45:00.002Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## SANS Holiday Hack Challenge

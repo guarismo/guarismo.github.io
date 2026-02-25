@@ -3,6 +3,8 @@ layout: post
 title: "The Joker: Starting CTF - Metasploitable 3"
 date: 2016-12-06T02:35:00.002Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## **Playing with Metasploitable 3**

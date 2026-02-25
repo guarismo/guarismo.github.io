@@ -3,6 +3,8 @@ layout: post
 title: "Metasploitable 3 - Hashdump without Authentication"
 date: 2017-01-13T18:53:00.001Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, exploitation]
 ---
 
 ## Metasploitable 3

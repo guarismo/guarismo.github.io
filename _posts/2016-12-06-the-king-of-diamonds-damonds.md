@@ -3,6 +3,8 @@ layout: post
 title: "The King of Diamonds (damonds??)"
 date: 2016-12-06T03:22:00.002Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3 

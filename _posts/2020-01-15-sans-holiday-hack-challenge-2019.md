@@ -3,6 +3,8 @@ layout: post
 title: "SANS Holiday Hack Challenge 2019"
 date: 2020-01-15T05:23:00.002Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2019, ctf]
 ---
 
 ## KringleCon 2 - Objective 12 

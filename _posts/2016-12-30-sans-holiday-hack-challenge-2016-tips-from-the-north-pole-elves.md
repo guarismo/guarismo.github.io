@@ -3,6 +3,8 @@ layout: post
 title: "SANS Holiday Hack Challenge 2016 - Tips from the North Pole Elves"
 date: 2016-12-30T04:04:00Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## Tips from the North Pole Elves

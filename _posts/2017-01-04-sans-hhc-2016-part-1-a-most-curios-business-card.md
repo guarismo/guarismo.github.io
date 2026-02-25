@@ -3,6 +3,8 @@ layout: post
 title: "SANS HHC 2016 - Part 1: A Most Curios Business Card"
 date: 2017-01-04T16:42:00Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## **SANS Holiday Hack Challenge 2016**

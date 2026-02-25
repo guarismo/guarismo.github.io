@@ -3,6 +3,8 @@ layout: post
 title: "The King of Clubs"
 date: 2017-01-07T21:30:00Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3

@@ -3,6 +3,8 @@ layout: post
 title: "SANS Holiday Hack Challenge 2019"
 date: 2020-01-13T21:30:00.005Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2019, ctf]
 ---
 
 ## KringleCon 2 - Obj 6

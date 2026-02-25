@@ -3,6 +3,8 @@ layout: post
 title: "The Ace of Hearts"
 date: 2016-12-09T02:16:00.001Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## **Metasploitable 3**

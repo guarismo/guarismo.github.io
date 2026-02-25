@@ -1,18 +1,18 @@
 # Jekyll Configuration
-# Blog converted from Blogger on 2026-02-24
+# Blog: The Internet of Stuff and Things
 
 title: The Internet of Stuff and Things
-description: A security research and CTF writeup blog
+description: Security research, CTF writeups, and hacking adventures
 
 # URL settings
 url: "https://guarismo.github.io"
-baseurl: ""  # Empty if you're using a GitHub user/org site
+baseurl: ""
 
 # Jekyll defaults
 permalink: /:year/:month/:day/:title/
 timezone: America/New_York
 
-# Theme
+# Theme - using remote theme for SEO tag support
 remote_theme: pages-themes/hacker@v0.2.0
 
 # Plugins
@@ -20,11 +20,24 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-remote-theme
+  - jekyll-seo-tag
 
-# Author info (used in posts)
+# Author info
 author:
-  name: Igor
-  url: 
+  name: gu4r15m0
+  url: https://github.com/guarismo
+
+# Category defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
 
 # Exclude unnecessary files
 exclude:
@@ -32,6 +45,7 @@ exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
+  - node_modules
 
 # Include dotfiles in build
 include:

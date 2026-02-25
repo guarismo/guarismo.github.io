@@ -3,6 +3,8 @@ layout: post
 title: "The Jack of Clubs"
 date: 2016-12-09T00:55:00Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3

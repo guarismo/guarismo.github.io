@@ -3,6 +3,8 @@ layout: post
 title: "The Jack of Hearts"
 date: 2017-01-06T19:34:00.001Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3

@@ -3,6 +3,8 @@ layout: post
 title: "The Queen of Hearts"
 date: 2016-12-06T04:50:00.001Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasploitable 3

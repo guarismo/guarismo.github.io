@@ -1,0 +1,32 @@
+- title: About Me
+  url: /about/
+  icon: "👤"
+
+- title: CTF Writeups
+  icon: "🚩"
+  children:
+    - title: SANS Holiday Hack
+      url: /ctf/sans-hhc/
+      icon: "🎄"
+      children:
+        - title: HHC 2022
+          tag: hhc-2022
+        - title: HHC 2019
+          tag: hhc-2019
+        - title: HHC 2016
+          tag: hhc-2016
+
+    - title: Metasploitable 3
+      url: /ctf/metasploitable/
+      icon: "💀"
+      children:
+        - title: Card Challenges
+          tag: cards
+        - title: Exploitation
+          tag: exploitation
+        - title: Vuln Scanning
+          tag: vulnerability-scanning
+
+- title: Miscellaneous
+  url: /misc/
+  icon: "📝"

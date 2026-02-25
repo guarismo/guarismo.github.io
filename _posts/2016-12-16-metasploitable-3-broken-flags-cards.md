@@ -3,6 +3,8 @@ layout: post
 title: "Metasploitable 3 - Broken flags (cards)"
 date: 2016-12-16T19:20:00.002Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 Hello, I just got this from the Metasploitable 3 team at Rapid7:

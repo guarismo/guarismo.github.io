@@ -3,6 +3,8 @@ layout: post
 title: "SANS HHC 2016 - Part 2: Awesome Package Konveyance"
 date: 2017-01-05T19:27:00.001Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## SANS Holiday Hack Challenge 2016

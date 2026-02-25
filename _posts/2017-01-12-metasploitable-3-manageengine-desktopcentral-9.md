@@ -3,6 +3,8 @@ layout: post
 title: "Metasploitable 3 - ManageEngine DesktopCentral 9"
 date: 2017-01-12T04:44:00Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, exploitation]
 ---
 
 Metasploitable 3

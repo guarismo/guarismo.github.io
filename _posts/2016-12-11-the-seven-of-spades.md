@@ -3,6 +3,8 @@ layout: post
 title: "The Seven of Spades"
 date: 2016-12-11T19:49:00Z
 author: gu4r15sm0
+category: metasploitable
+tags: [metasploitable3, ctf, cards]
 ---
 
 ## Metasplopitable 3

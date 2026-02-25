@@ -3,6 +3,8 @@ layout: post
 title: "SANS HHC 2016 - Part 4.3: My Gosh... It's Full of Holes - Analytics (post authentication)"
 date: 2017-01-07T02:14:00.001Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## SANS Holiday Hack Challenge 2016

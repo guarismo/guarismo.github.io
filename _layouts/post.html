@@ -2,9 +2,19 @@
 layout: default
 ---
 
-<small>{{ page.date | date: "%B %d, %Y" }} — {{ page.author }}</small>
+<div class="post-meta">
+  📅 {{ page.date | date: "%B %d, %Y" }}
+  {% if page.author %} &middot; 👤 {{ page.author }}{% endif %}
+  {% if page.category %} &middot; 📁 {{ page.category }}{% endif %}
+  {% if page.tags %}
+    <br>🏷️
+    {% for tag in page.tags %}
+      <span style="background:#161b22;padding:2px 8px;border-radius:12px;font-size:11px;border:1px solid #30363d;color:#8b949e;">{{ tag }}</span>
+    {% endfor %}
+  {% endif %}
+</div>
 
 {{ content }}
 
 <hr>
-<p><a href="/">← Back to all posts</a></p>
+<a class="back-link" href="/">← Back to all posts</a>

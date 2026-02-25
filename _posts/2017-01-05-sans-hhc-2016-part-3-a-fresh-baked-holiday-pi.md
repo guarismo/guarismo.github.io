@@ -3,6 +3,8 @@ layout: post
 title: "SANS HHC 2016 - Part 3: A Fresh-Baked Holiday Pi"
 date: 2017-01-05T23:25:00Z
 author: gu4r15sm0
+category: sans-hhc
+tags: [sans, hhc-2016, ctf]
 ---
 
 ## SANS Holiday Hack Challenge 2016

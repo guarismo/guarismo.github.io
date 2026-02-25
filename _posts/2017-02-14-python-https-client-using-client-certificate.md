@@ -3,6 +3,8 @@ layout: post
 title: "Python -  HTTPS Client using Client certificate"
 date: 2017-02-14T02:10:00.001Z
 author: gu4r15sm0
+category: misc
+tags: [python, ssl, certificates]
 ---
 
 ## Python HTTPS Client using a Client certificate

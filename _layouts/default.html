@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  {% seo %}
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+</head>
+<body>
+
+  {% include sidebar.html %}
+
+  <div class="main-content" id="main-content">
+    <header class="page-header">
+      <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+      {% if site.description %}<p class="project-tagline">{{ site.description }}</p>{% endif %}
+    </header>
+
+    <main class="main-body">
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <span class="site-footer-credits">
+        {{ site.title }} &mdash; Powered by <a href="https://pages.github.com">GitHub Pages</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+  // Sidebar toggle
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const sidebarClose = document.getElementById('sidebar-close');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    document.body.classList.add('sidebar-open');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.classList.remove('sidebar-open');
+  }
+
+  hamburger.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  sidebarClose.addEventListener('click', closeSidebar);
+
+  // Collapsible menu
+  document.querySelectorAll('.nav-toggle').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = 'nav-' + this.dataset.toggle;
+      const target = document.getElementById(targetId);
+      const arrow = this.querySelector('.nav-arrow');
+
+      if (target) {
+        target.classList.toggle('expanded');
+        arrow.classList.toggle('expanded');
+
+        // Save state
+        const state = JSON.parse(localStorage.getItem('navState') || '{}');
+        state[targetId] = target.classList.contains('expanded');
+        localStorage.setItem('navState', JSON.stringify(state));
+      }
+    });
+  });
+
+  // Restore state
+  const savedState = JSON.parse(localStorage.getItem('navState') || '{}');
+  Object.keys(savedState).forEach(function(id) {
+    if (savedState[id]) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.add('expanded');
+        const toggle = document.querySelector('[data-toggle="' + id.replace('nav-', '') + '"]');
+        if (toggle) {
+          const arrow = toggle.querySelector('.nav-arrow');
+          if (arrow) arrow.classList.add('expanded');
+        }
+      }
+    }
+  });
+
+  // On desktop, sidebar is always visible
+  if (window.innerWidth > 768) {
+    sidebar.classList.add('open');
+  }
+  </script>
+
+</body>
+</html>
