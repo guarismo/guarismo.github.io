@@ -17,32 +17,46 @@ nginx: a very simple webserver to host the Server cert and authenticate the clie
 Python 2.7.x: since this is the version included with Splunk.
 Creating a Certificate Authority for testing purposes:
 First we need a Private key for our local CA, using OpenSSL I select RSA to create a 4096 bit long key:
-\[igor@splunk01 ca\]$ openssl genrsa -des3 -out ca.key 4096
+[igor@splunk01 ca]$ openssl genrsa -des3 -out ca.key 4096
+
+```text
 Generating RSA private key, 4096 bit long modulus
 ............................................................................................................................................................................................................................................................................................................................................................................++
 ...........................................................++
 e is 65537 (0x10001)
+
+```text
 Enter pass phrase for ca.key:
 Verifying - Enter pass phrase for ca.key:
+```
+```
+
+
 Then we create our local CA certificate (signed public key) with a 1 year (365 days) validity period and store in in ca.crt signed using our private key ca.key
-\[igor@splunk01 ca\]$ openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+[igor@splunk01 ca]$ openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+
+```text
 Enter pass phrase for ca.key:
 You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
 There are quite a few fields but you can leave some blank
+```
+
 For some fields there will be a default value,
 If you enter '.', the field will be left blank.
-\-----
-Country Name (2 letter code) \[XX\]:CA
-State or Province Name (full name) \[\]:Ontario
-Locality Name (eg, city) \[Default City\]:Toronto
-Organization Name (eg, company) \[Default Company Ltd\]:.
-Organizational Unit Name (eg, section) \[\]:.
-Common Name (eg, your name or your server's hostname) \[\]:gu4r15m0
-Email Address \[\]:
+-----
+Country Name (2 letter code) [XX]:CA
+State or Province Name (full name) []:Ontario
+Locality Name (eg, city) [Default City]:Toronto
+Organization Name (eg, company) [Default Company Ltd]:.
+Organizational Unit Name (eg, section) []:.
+Common Name (eg, your name or your server's hostname) []:gu4r15m0
+Email Address []:
 And now we have a CA root certificate and we can read it with OpenSSL:
-\[igor@splunk01 ca\]$ openssl x509 -in ca.crt -text -noout
+[igor@splunk01 ca]$ openssl x509 -in ca.crt -text -noout
+
+```text
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -130,40 +144,50 @@ Certificate:
          ee:55:3e:0c:62:db:6b:ee:d5:c7:ae:53:af:21:41:65:8e:31:
          1d:fd:d6:90:8e:4a:1b:1f:a3:b9:8a:87:4b:0a:4c:a1:a8:a8:
          1b:2a:2b:5e:4a:28:56:4f
+```
+
 Now we can create our client side certificate:
 
 First we create a Private key for our client:
-\[igor@splunk01 ca\]$ openssl genrsa -des3 -out client.key 4096
+[igor@splunk01 ca]$ openssl genrsa -des3 -out client.key 4096
+
+```text
 Generating RSA private key, 4096 bit long modulus
 ........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................++
 ............++
 e is 65537 (0x10001)
+
+```text
 Enter pass phrase for client.key:
 Verifying - Enter pass phrase for client.key:
+```
+
 Then we create a Certificate Signing Request (CSR) using the private key:
-\[igor@splunk01 ca\]$ openssl req -new -key client.key -out client.csr
+[igor@splunk01 ca]$ openssl req -new -key client.key -out client.csr
 Enter pass phrase for client.key:
 You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
 There are quite a few fields but you can leave some blank
+```
+
 For some fields there will be a default value,
 If you enter '.', the field will be left blank.
-\-----
-Country Name (2 letter code) \[XX\]:CA
-State or Province Name (full name) \[\]:Ontario
-Locality Name (eg, city) \[Default City\]:Toronto
-Organization Name (eg, company) \[Default Company Ltd\]:
-Organizational Unit Name (eg, section) \[\]:.
-Common Name (eg, your name or your server's hostname) \[\]:gu4r15m0
-Email Address \[\]:
+-----
+Country Name (2 letter code) [XX]:CA
+State or Province Name (full name) []:Ontario
+Locality Name (eg, city) [Default City]:Toronto
+Organization Name (eg, company) [Default Company Ltd]:
+Organizational Unit Name (eg, section) []:.
+Common Name (eg, your name or your server's hostname) []:gu4r15m0
+Email Address []:
 Please enter the following 'extra' attributes
 to be sent with your certificate request
-A challenge password \[\]:
-An optional company name \[\]:
+A challenge password []:
+An optional company name []:
 We can look at our Base64 CSR:
-\[igor@splunk01 ca\]$ cat client.csr
-\-----BEGIN CERTIFICATE REQUEST-----
+[igor@splunk01 ca]$ cat client.csr
+-----BEGIN CERTIFICATE REQUEST-----
 MIIEpzCCAo8CAQAwYjELMAkGA1UEBhMCQ0ExEDAOBgNVBAgMB09udGFyaW8xEDAO
 BgNVBAcMB1Rvcm9udG8xHDAaBgNVBAoME0RlZmF1bHQgQ29tcGFueSBMdGQxETAP
 BgNVBAMMCGd1NHIxNW0wMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA
@@ -189,10 +213,10 @@ SvHIYpWG7gBKiBzlMceDRm3HzT7HEewNRQnpn4XuTmHoWiSPTow5ZOA0842qake+
 Tami5UpwltBhDdJylxdM8Rded5I9mGBHMAsUsQZMzfF626ZFwsK5PbLT//wXWzSO
 tO7Th9xvT0h5Vtcibly83d7mUOdM3PGg3dsbADvCWoZd5n7Ke7/LQYPZx02O2Bjs
 sXcIdxSXxwbKFYEwlktgxnFAe85acA8E59NEvCMAGqgibkuXE4d6zCfiWw==
-\-----END CERTIFICATE REQUEST-----
-\[igor@splunk01 ca\]$
+-----END CERTIFICATE REQUEST-----
+[igor@splunk01 ca]$
 Or using OpenSSL for the decode the Base64:
-\[igor@splunk01 ca\]$ openssl req -in client.csr -text -noout
+[igor@splunk01 ca]$ openssl req -in client.csr -text -noout
 Certificate Request:
     Data:
         Version: 0 (0x0)
@@ -201,6 +225,8 @@ Certificate Request:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (4096 bit)
                 Modulus:
+
+```text
                     00:b0:71:a1:30:5e:77:83:d8:1b:67:19:a8:34:c5:
                     11:7a:49:7e:ff:b7:f1:60:61:b5:2c:07:65:fd:c1:
                     eb:4b:fb:08:c5:e2:cc:6e:a9:81:18:6b:22:bd:8c:
@@ -269,14 +295,18 @@ Certificate Request:
          ec:b1:77:08:77:14:97:c7:06:ca:15:81:30:96:4b:60:c6:71:
          40:7b:ce:5a:70:0f:04:e7:d3:44:bc:23:00:1a:a8:22:6e:4b:
          97:13:87:7a:cc:27:e2:5b
+```
+
 Now we have that we have a CSR, we submit it to our CA or signing using the CA private key (ca.key) and creating the Certificate client.crt 
-\[igor@splunk01 ca\]$ openssl x509 -req -sha256 -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set\_serial 01 -out client.crt
+[igor@splunk01 ca]$ openssl x509 -req -sha256 -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out client.crt
 Signature ok
 subject=/C=CA/ST=Ontario/L=Toronto/O=Default Company Ltd/CN=gu4r15m0
 Getting CA Private Key
 Enter pass phrase for ca.key:
 And now we have a certificate that we can read it with OpenSSL:
-\[igor@splunk01 ca\]$ openssl x509 -in client.crt -text -noout
+[igor@splunk01 ca]$ openssl x509 -in client.crt -text -noout
+
+```text
 Certificate:
     Data:
         Version: 1 (0x0)
@@ -357,36 +387,38 @@ Certificate:
          75:32:fb:2d:81:38:5c:c2:87:e4:fa:4d:5c:19:85:e0:20:b8:
          c3:76:59:fb:22:85:50:1e:87:22:92:75:60:44:96:05:f1:5c:
          b5:ad:62:56:bf:47:9f:be
+```
+
 Next Step is to create certificate for our server.
 First we need a private key (server.key) to encrypt the traffic, in this case I don't use des3, so the key it's not encrypted with a passphrase, this is not recommended but it's just for a quick test: 
-\[igor@splunk01 ca\]$ openssl genrsa -out server.key 4096
+[igor@splunk01 ca]$ openssl genrsa -out server.key 4096
 Generating RSA private key, 4096 bit long modulus
 .....................................................................................................++
 ............................................................................................................++
 e is 65537 (0x10001)
 Then we create a CSR server.csr:
-\[igor@splunk01 ca\]$ openssl req -sha256 -new -key server.key -out server.csr
+[igor@splunk01 ca]$ openssl req -sha256 -new -key server.key -out server.csr
 You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
 There are quite a few fields but you can leave some blank
 For some fields there will be a default value,
 If you enter '.', the field will be left blank.
-\-----
-Country Name (2 letter code) \[XX\]:CA
-State or Province Name (full name) \[\]:Ontario
-Locality Name (eg, city) \[Default City\]:Toronto
-Organization Name (eg, company) \[Default Company Ltd\]:
-Organizational Unit Name (eg, section) \[\]:
-Common Name (eg, your name or your server's hostname) \[\]:splunk01
-Email Address \[\]:
+-----
+Country Name (2 letter code) [XX]:CA
+State or Province Name (full name) []:Ontario
+Locality Name (eg, city) [Default City]:Toronto
+Organization Name (eg, company) [Default Company Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (eg, your name or your server's hostname) []:splunk01
+Email Address []:
 Please enter the following 'extra' attributes
 to be sent with your certificate request
-A challenge password \[\]:
-An optional company name \[\]:
+A challenge password []:
+An optional company name []:
 We review our request with OpenSSL
 
-\[igor@splunk01 ca\]$ openssl req -in server.csr -text
+[igor@splunk01 ca]$ openssl req -in server.csr -text
 
 Certificate Request:
 
@@ -404,6 +436,8 @@ Certificate Request:
 
                 Modulus:
 
+
+```text
                     00:bc:b3:4d:9b:02:0a:7c:2e:81:27:e9:7e:f3:a8:
 
                     65:d0:33:35:fe:9f:18:47:88:d1:3b:0e:6d:91:79:
@@ -540,7 +574,9 @@ Certificate Request:
 
          bb:24:20:c8:86:be:b2:d8
 
-\-----BEGIN CERTIFICATE REQUEST-----
+-----BEGIN CERTIFICATE REQUEST-----
+```
+
 
 MIIEpzCCAo8CAQAwYjELMAkGA1UEBhMCQ0ExEDAOBgNVBAgMB09udGFyaW8xEDAO
 
@@ -592,11 +628,11 @@ Q3JQ1uBTBerFDUTv3ZHUQU6AdT9JSQv5S/vqJzYZOBuHaP3jKp0V3URa0eG9SvO+
 
 MEYJOg9NbM4shIC9A/9aF1/3q/1IlpsLZ+TZndl200K47Qe7JCDIhr6y2A==
 
-\-----END CERTIFICATE REQUEST-----
+-----END CERTIFICATE REQUEST-----
 
 And we submit the request to the CA to create our new server.crt:
 
-\[igor@splunk01 ca\]$ openssl x509 -req -sha256 -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set\_serial 02 -out server.crt
+[igor@splunk01 ca]$ openssl x509 -req -sha256 -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 02 -out server.crt
 Signature ok
 subject=/C=CA/ST=Ontario/L=Toronto/O=Default Company Ltd/CN=splunk01
 Getting CA Private Key
@@ -604,8 +640,10 @@ Enter pass phrase for ca.key:
 
 And we take a look at certificate to make sure it's what we asked for:
 
-\[igor@splunk01 ca\]$ openssl x509 -in server.crt -text
+[igor@splunk01 ca]$ openssl x509 -in server.crt -text
 
+
+```text
 Certificate:
 
     Data:
@@ -766,7 +804,9 @@ Certificate:
 
          6e:5a:af:14:f8:a6:81:d5
 
-\-----BEGIN CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+```
+
 
 MIIFGjCCAwICAQIwDQYJKoZIhvcNAQELBQAwRDELMAkGA1UEBhMCQ0ExEDAOBgNV
 
@@ -824,7 +864,7 @@ ZYtQzKQqfMyoolrmeTl2MYwyFM7LjW4CYD4fuu8kxJ1/bPM4u824oj7jh71idxgU
 
 2ie63b58blqvFPimgdU=
 
-\-----END CERTIFICATE-----
+-----END CERTIFICATE-----
 
 Now we copy our CA certificate and  server certificate and key to the /etc/pki/nginx folder and edit our /etc/nginx/nginx.conf to include a SSL configuration to use our certificate and trust our CA
 
@@ -836,31 +876,31 @@ Now we copy our CA certificate and  server certificate and key to the /etc/pki/
 
     server {
 
-        listen       443 ssl http2 default\_server;
+        listen       443 ssl http2 default_server;
 
-        listen       \[::\]:443 ssl http2 default\_server;
+        listen       [::]:443 ssl http2 default_server;
 
-        server\_name  \_;
+        server_name  \_;
 
         root         /usr/share/nginx/html;
 
-        ssl\_certificate "**/etc/pki/nginx/server.crt**";
+        ssl_certificate "**/etc/pki/nginx/server.crt**";
 
-        ssl\_certificate\_key "**/etc/pki/nginx/private/server.key**";
+        ssl_certificate_key "**/etc/pki/nginx/private/server.key**";
 
-        ssl\_session\_cache shared:SSL:1m;
+        ssl_session_cache shared:SSL:1m;
 
-        ssl\_session\_timeout  10m;
+        ssl_session_timeout  10m;
 
-        ssl\_ciphers HIGH:!aNULL:!MD5;
+        ssl_ciphers HIGH:!aNULL:!MD5;
 
-        ssl\_prefer\_server\_ciphers on;
+        ssl_prefer_server_ciphers on;
 
         # Client side cert
 
-        ssl\_client\_certificate **/etc/pki/nginx/CA/ca.crt**;
+        ssl_client_certificate **/etc/pki/nginx/CA/ca.crt**;
 
-        ssl\_verify\_client optional; # or \`on\` if you require client key
+        ssl_verify_client optional; # or \`on\` if you require client key
 
 #
 
@@ -874,13 +914,13 @@ Now we copy our CA certificate and  server certificate and key to the /etc/pki/
 
         }
 
-        error\_page 404 /404.html;
+        error_page 404 /404.html;
 
             location = /40x.html {
 
         }
 
-        error\_page 500 502 503 504 /50x.html;
+        error_page 500 502 503 504 /50x.html;
 
             location = /50x.html {
 
@@ -892,11 +932,11 @@ Now we copy our CA certificate and  server certificate and key to the /etc/pki/
 
 We restart nginx with systemctl:
 
-\[igor@splunk01 ca\]$ sudo systemctl restart nginx
+[igor@splunk01 ca]$ sudo systemctl restart nginx
 
 And with a curl command we make sure this is all working, notice I have to type the passphrase for the private key next to the certificate file (\--cert ./client.crt:**hello**)
 
-\[igor@splunk01 ca\]$ curl -kv --cert-type pem --cert ./client.crt:hello --key ./client.key https://localhost
+[igor@splunk01 ca]$ curl -kv --cert-type pem --cert ./client.crt:hello --key ./client.key https://localhost
 
 \* About to connect() to localhost port 443 (#0)
 
@@ -920,7 +960,7 @@ And with a curl command we make sure this is all working, notice I have to type 
 
 \*       issuer: CN=gu4r15m0,L=Toronto,ST=Ontario,C=CA
 
-\* SSL connection using TLS\_DHE\_RSA\_WITH\_AES\_256\_CBC\_SHA
+\* SSL connection using TLS_DHE_RSA_WITH_AES_256_CBC_SHA
 
 \* **Server certificate:**
 
@@ -970,7 +1010,7 @@ Now for the python script, I'm going to use the [requests module](http://docs.py
 
 I'll install the CentOS one for now:
 
-\[igor@splunk01 ca\]$ sudo yum install python-requests.noarch
+[igor@splunk01 ca]$ sudo yum install python-requests.noarch
 
 Loaded plugins: fastestmirror, langpacks
 
@@ -988,35 +1028,35 @@ Resolving Dependencies
 
 \--> Running transaction check
 
-\---> Package python-requests.noarch 0:2.6.0-1.el7\_1 will be installed
+\---> Package python-requests.noarch 0:2.6.0-1.el7_1 will be installed
 
-\--> Processing Dependency: python-urllib3 >= 1.10.2-1 for package: python-requests-2.6.0-1.el7\_1.noarch
+\--> Processing Dependency: python-urllib3 >= 1.10.2-1 for package: python-requests-2.6.0-1.el7_1.noarch
 
 \--> Running transaction check
 
-\---> Package python-urllib3.noarch 0:1.10.2-2.el7\_1 will be installed
+\---> Package python-urllib3.noarch 0:1.10.2-2.el7_1 will be installed
 
 \--> Finished Dependency Resolution
 
 Dependencies Resolved
 
-\=======================================================================================================================================================
+=======================================================================================================================================================
 
  Package                                  Arch                            Version                                  Repository                     Size
 
-\=======================================================================================================================================================
+=======================================================================================================================================================
 
 Installing:
 
- python-requests                          noarch                          2.6.0-1.el7\_1                            base                           94 k
+ python-requests                          noarch                          2.6.0-1.el7_1                            base                           94 k
 
 Installing for dependencies:
 
- python-urllib3                           noarch                          1.10.2-2.el7\_1                           base                          100 k
+ python-urllib3                           noarch                          1.10.2-2.el7_1                           base                          100 k
 
 Transaction Summary
 
-\=======================================================================================================================================================
+=======================================================================================================================================================
 
 Install  1 Package (+1 Dependent package)
 
@@ -1024,7 +1064,7 @@ Total size: 193 k
 
 Installed size: 711 k
 
-Is this ok \[y/d/N\]: y
+Is this ok [y/d/N]: y
 
 Downloading packages:
 
@@ -1036,31 +1076,31 @@ Transaction test succeeded
 
 Running transaction
 
-  Installing : python-urllib3-1.10.2-2.el7\_1.noarch                                                                                                1/2
+  Installing : python-urllib3-1.10.2-2.el7_1.noarch                                                                                                1/2
 
-  Installing : python-requests-2.6.0-1.el7\_1.noarch                                                                                                2/2
+  Installing : python-requests-2.6.0-1.el7_1.noarch                                                                                                2/2
 
-  Verifying  : python-requests-2.6.0-1.el7\_1.noarch                                                                                                1/2
+  Verifying  : python-requests-2.6.0-1.el7_1.noarch                                                                                                1/2
 
-  Verifying  : python-urllib3-1.10.2-2.el7\_1.noarch                                                                                                2/2
+  Verifying  : python-urllib3-1.10.2-2.el7_1.noarch                                                                                                2/2
 
 Installed:
 
-  python-requests.noarch 0:2.6.0-1.el7\_1
+  python-requests.noarch 0:2.6.0-1.el7_1
 
 Dependency Installed:
 
-  python-urllib3.noarch 0:1.10.2-2.el7\_1
+  python-urllib3.noarch 0:1.10.2-2.el7_1
 
 Complete!
 
 OK, now we can use the requests module:
 
-\[igor@splunk01 ca\]$ python
+[igor@splunk01 ca]$ python
 
 Python 2.7.5 (default, Jun 24 2015, 00:41:19)
 
-\[GCC 4.8.3 20140911 (Red Hat 4.8.3-9)\] on linux2
+[GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
 
 Type "help", "copyright", "credits" or "license" for more information.
 
@@ -1094,7 +1134,7 @@ Traceback (most recent call last):
 
   File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 464, in request
 
-    resp = self.send(prep, \*\*send\_kwargs)
+    resp = self.send(prep, \*\*send_kwargs)
 
   File "/usr/lib/python2.7/site-packages/requests/sessions.py", line 576, in send
 
@@ -1140,15 +1180,15 @@ Enter PEM pass phrase:
 
 u'<html>\\r\\n<head><title>405 Not Allowed</title></head>\\r\\n<body bgcolor="white">\\r\\n<center><h1>405 Not Allowed</h1></center>\\r\\n<hr><center>nginx/1.10.2</center>\\r\\n</body>\\r\\n</html>\\r\\n'
 
-I can read the status\_code value from the response, and use it in a conditional clause for example
+I can read the status_code value from the response, and use it in a conditional clause for example
 
-\>>> res.status\_code
+\>>> res.status_code
 
 405
 
-\>>> if res.status\_code <> 200:
+\>>> if res.status_code <> 200:
 
-...    print "We didn't get an HTTP 200 :(, instead we got {}".format(res.status\_code)
+...    print "We didn't get an HTTP 200 :(, instead we got {}".format(res.status_code)
 
 ...
 

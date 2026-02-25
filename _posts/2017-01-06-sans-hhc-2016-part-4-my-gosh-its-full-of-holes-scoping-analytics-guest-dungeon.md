@@ -230,15 +230,19 @@ Email with Source Code of a decoder for the Dungeon data file
 
 How lucky!?!? Let’s use that
 
-**root@igor-kali**:**~/hhack2016/dungeon**\# ./read\_dungeon -b dtextc.dat -a dungeon.txt
+root@igor-kali:~/hhack2016/dungeon# ./read_dungeon -b dtextc.dat -a dungeon.txt
 
 The output in the dungeon.txt is all readable ASCII now, and since we’re looking for an elf, let’s search for that string
 
-**root@igor-kali**:**~/hhack2016/dungeon**\# grep -i " elf" dungeon.txt
+
+```bash
+root@igor-kali:~/hhack2016/dungeon# grep -i " elf" dungeon.txt
 
 Room: 192: Elf Room
 
     Your mission is to find the elf at the North Pole and barter with him
+```
+
 
 Object: 217: Elf
 
@@ -256,7 +260,7 @@ Object: 217: Elf
 
 There’s a room number (192) and an Object (217) with the elf and also some dialog with spelling mistakes, but is chopped, so I expanded the grep command
 
-**root@igor-kali**:**~/hhack2016/dungeon**\# grep -i " elf" dungeon.txt -A 3 -B 3
+root@igor-kali:~/hhack2016/dungeon# grep -i " elf" dungeon.txt -A 3 -B 3
 
 …
 

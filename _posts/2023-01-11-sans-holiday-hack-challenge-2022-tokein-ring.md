@@ -45,7 +45,7 @@ And there we can see the IP address to answer the question
 
 Now for question file, we can save the app.php file to our computer from the Wireshark File menu using the same Export Object option as above.
 
-To look at the last few lines of the file we use the tail command and we can see there's a blob being saved as **Ref\_Sept21-2020.zip**, this is the answer.
+To look at the last few lines of the file we use the tail command and we can see there's a blob being saved as **Ref_Sept21-2020.zip**, this is the answer.
 
 [![](https://blogger.googleusercontent.com/img/a/AVvXsEhQaB83zMkclLzdUejy-2f7s-NZtIqfgH_9e0TAye1EGb1CU6McWHAdMx2oIWuAgHNrgL6ILdSvqc4gyqW92lYYL1vXhDs2tO7ew2lfioQlYXwyKBOmbiTkHcGaZSKb-6RV3PscjjImu6VugpS2NggaHFNbrPpwH2XuX4veep7TvYnU6PorLJ5uvcEU=w640-h196)](https://blogger.googleusercontent.com/img/a/AVvXsEhQaB83zMkclLzdUejy-2f7s-NZtIqfgH_9e0TAye1EGb1CU6McWHAdMx2oIWuAgHNrgL6ILdSvqc4gyqW92lYYL1vXhDs2tO7ew2lfioQlYXwyKBOmbiTkHcGaZSKb-6RV3PscjjImu6VugpS2NggaHFNbrPpwH2XuX4veep7TvYnU6PorLJ5uvcEU)
 
@@ -113,7 +113,7 @@ We verify again, and get our new task to identify bad certificates in the traffi
 
 To accomplish this, we need suricata to examine the certificate that is used in the TLS handshake by verifying the CommonName (CN) in it:
 
-alert tls any any -> any any (msg:"Investigate bad certificates, possible Dridex infection";tls.cert\_subject; content:"CN=heardbellith.Icanwepeh.nagoya";sid:202212114;rev:1;)
+alert tls any any -> any any (msg:"Investigate bad certificates, possible Dridex infection";tls.cert_subject; content:"CN=heardbellith.Icanwepeh.nagoya";sid:202212114;rev:1;)
 
 [![](https://blogger.googleusercontent.com/img/a/AVvXsEg4qZL7E8JaAqU9iqMks_NZfY2hgiDtD3SnYmNpHUgmZMkA5-An1pw-rWEFCDxsSC0AWMdwtMJ5Mhy26XlVijn7Ps7aKqi7ywxwgcF10zqH9IcZ5PLqMHOEXPJegG1m-teXcC6HiLaGFl7lKXflVsPFSv91YuFNh8iBIU4xCMzDiKmrZXF-_TmVbClt=w640-h186)](https://blogger.googleusercontent.com/img/a/AVvXsEg4qZL7E8JaAqU9iqMks_NZfY2hgiDtD3SnYmNpHUgmZMkA5-An1pw-rWEFCDxsSC0AWMdwtMJ5Mhy26XlVijn7Ps7aKqi7ywxwgcF10zqH9IcZ5PLqMHOEXPJegG1m-teXcC6HiLaGFl7lKXflVsPFSv91YuFNh8iBIU4xCMzDiKmrZXF-_TmVbClt)
 
@@ -123,7 +123,7 @@ Once again, we verify our new rule and get one more task
 
 We can find the malicous JavaScript by checking the body of the HTTP response to match the string we're looking for
 
-alert http any any -> any any (msg:"Suspicious JavaScript function, possible Dridex infection"; flow:to\_client;http.response\_body;content:"let byteCharacters = atob";sid:5;)
+alert http any any -> any any (msg:"Suspicious JavaScript function, possible Dridex infection"; flow:to_client;http.response_body;content:"let byteCharacters = atob";sid:5;)
 
 And that's it! 
 

@@ -11,12 +11,19 @@ author: gu4r15sm0
 
 I ssh'ed into the server with the Administrator credentials previously found.
 
-**root@igor-kali**:**~**\# ssh Administrator@10.20.10.19
+
+```bash
+root@igor-kali:~# ssh Administrator@10.20.10.19
 
 Administrator@10.20.10.19’s password:
+```
+```
+
 
 Permission denied, please try again.
 
+
+```text
 Administrator@10.20.10.19’s password:
 
 \-sh-4.3$
@@ -24,6 +31,8 @@ Administrator@10.20.10.19’s password:
 \-sh-4.3$ pwd
 
 /cygdrive/c/Users/Administrator
+```
+
 
 I started navigating through the folders and ended up in Users/Public/Documents and looking at the list of files I found a Word .docx file.
 
@@ -37,7 +46,7 @@ Desktop  Documents  Downloads  Favorites  Libraries  Music  Pictures  Vid
 
 \-sh-4.3$ ls
 
-My Music  My Pictures  My Videos  desktop.ini  jack\_of\_hearts.docx  seven\_of\_spades.pdf
+My Music  My Pictures  My Videos  desktop.ini  jack_of_hearts.docx  seven_of_spades.pdf
 
 I downloaded the file with ***scp*** and doubled click on the file in Kali Linux and since I don’t have any Application to read .docx files, it saw it as a Zip file and opened in the Archive Manager applications
 

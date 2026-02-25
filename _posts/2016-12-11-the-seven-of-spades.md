@@ -11,12 +11,19 @@ author: gu4r15sm0
 
 Once I guessed the Administrator user's password I was able to login through SSH in the Metasploitable3 server
 
-**root@igor-kali**:**~**\# ssh Administrator@10.20.10.19
+
+```bash
+root@igor-kali:~# ssh Administrator@10.20.10.19
 
 Administrator@10.20.10.19's password:
+```
+```
+
 
 Permission denied, please try again.
 
+
+```text
 Administrator@10.20.10.19's password:
 
 \-sh-4.3$
@@ -24,6 +31,8 @@ Administrator@10.20.10.19's password:
 \-sh-4.3$ pwd
 
 /cygdrive/c/Users/Administrator
+```
+
 
 I started navigating through the folders and ended up in Users/Public/Documents and looking at the list of file I found a PDF file.
 
@@ -37,15 +46,20 @@ Desktop  Documents  Downloads  Favorites  Libraries  Music  Pictures  Vid
 
 \-sh-4.3$ ls
 
-My Music  My Pictures  My Videos  desktop.ini  jack\_of\_hearts.docx  **seven\_of\_spades.pdf**
+My Music  My Pictures  My Videos  desktop.ini  jack_of_hearts.docx  **seven_of_spades.pdf**
 
 I downloaded the file using scp
 
-**root@igor-kali**:**~**\# scp Administrator@10.20.10.19:/cygdrive/c/Users/Public/Documents/seven\_of\_spades.pdf .
+
+```bash
+root@igor-kali:~# scp Administrator@10.20.10.19:/cygdrive/c/Users/Public/Documents/seven_of_spades.pdf .
 
 Administrator@10.20.10.19&apos;s password:
+```
+```
 
-seven\_of\_spades.pdf                                        100%  494KB   2.9MB/s   00:00  
+
+seven_of_spades.pdf                                        100%  494KB   2.9MB/s   00:00  
 
 Bu it looks like this:
 
@@ -55,7 +69,7 @@ Original PDF File
 
 *So I use pdf-parser to look at the image and noticed to images embedded*
 
-**root@igor-kali**:**~/seven\_of\_spades**\# pdf-parser -w seven\_of\_spades.pdf |less
+root@igor-kali:~/seven_of_spades# pdf-parser -w seven_of_spades.pdf |less
 
 obj 7 0
 
@@ -83,7 +97,7 @@ obj 7 0
 
     /Length 498422
 
-    /Filter \[/FlateDecode\]
+    /Filter [/FlateDecode]
 
     /DecodeParms
 
@@ -99,7 +113,7 @@ obj 7 0
 
       >>
 
-    \]
+    ]
 
   >>
 
@@ -125,11 +139,11 @@ obj 8 0
 
     /ColorSpace /DeviceGray
 
-    /Decode \[0 1\]
+    /Decode [0 1]
 
     /Length 5636
 
-    /Filter \[/FlateDecode\]
+    /Filter [/FlateDecode]
 
     /DecodeParms
 
@@ -159,9 +173,14 @@ But no worries, twitter helped...
 
 So that's what I did
 
-**root@igor-kali**:**~/seven\_of\_spades**\# pdfimages -all -p seven\_of\_spades.pdf .
 
-**root@igor-kali**:**~/seven\_of\_spades**\# ls -al
+```bash
+root@igor-kali:~/seven_of_spades# pdfimages -all -p seven_of_spades.pdf .
+
+root@igor-kali:~/seven_of_spades# ls -al
+```
+```
+
 
 total 984
 
@@ -173,11 +192,15 @@ drwxr-xr-x 31 root root   4096 Dec 15 20:44 **..**
 
 \-rw-r--r--  1 root root   4730 Dec 15 20:25 **.-001-001.png**
 
-\-rwxr-x---  1 root root 505608 Dec 10 00:28 **seven\_of\_spades.pdf**
+\-rwxr-x---  1 root root 505608 Dec 10 00:28 **seven_of_spades.pdf**
 
-**root@igor-kali**:**~/seven\_of\_spades**\# file .\*.png
+
+```bash
+root@igor-kali:~/seven_of_spades# file .\*.png
 
 .-001-000.png: PNG image data, 521 x 729, 8-bit/color RGB, non-interlaced
+```
+
 
 .-001-001.png: PNG image data, 521 x 729, 8-bit grayscale, non-interlaced
 

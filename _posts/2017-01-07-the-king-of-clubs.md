@@ -11,45 +11,61 @@ author: gu4r15sm0
 
 From the meterpreter I found in the Elasticsearch vulnerability, I used the search command to look for files that start with king:
 
+
+```bash
 meterpreter > search -f king\*
 
 Found 5 results...
 
-    **C:\\Windows\\System32\\kingofclubs.exe (824563 bytes)**
+    C:\Windows\System32\kingofclubs.exe (824563 bytes)
 
-    C:\\vagrant\\resources\\flags\\kingofclubs.exe (824563 bytes)
 
-    C:\\wamp\\www\\wordpress\\wp-content\\uploads\\2016\\09\\king\_of\_damonds-150x150.png (46738 bytes)
+```text
+    C:\vagrant\resources\flags\kingofclubs.exe (824563 bytes)
 
-    C:\\wamp\\www\\wordpress\\wp-content\\uploads\\2016\\09\\king\_of\_damonds-214x300.png (130832 bytes)
+    C:\wamp\www\wordpress\wp-content\uploads\2016\09\king_of_damonds-150x150.png (46738 bytes)
 
-    C:\\wamp\\www\\wordpress\\wp-content\\uploads\\2016\\09\\king\_of\_damonds.png (585695 bytes)
+    C:\wamp\www\wordpress\wp-content\uploads\2016\09\king_of_damonds-214x300.png (130832 bytes)
+
+    C:\wamp\www\wordpress\wp-content\uploads\2016\09\king_of_damonds.png (585695 bytes)
+```
+```
+
 
 I downloaded the file:
 
+
+```bash
 meterpreter > download kingofclubs.exe
 
-**\[\*\]** downloading: kingofclubs.exe -> kingofclubs.exe
+**[\*]** downloading: kingofclubs.exe -> kingofclubs.exe
 
-**\[\*\]** download   : kingofclubs.exe -> kingofclubs.exe
+**[\*]** download   : kingofclubs.exe -> kingofclubs.exe
 
 *I examine the file, as expected it’s a Windows executable, and 32bits.*
 
-**root@igor-kali**:**~/metasploitable3**\# file kingofclubs.exe
+root@igor-kali:~/metasploitable3# file kingofclubs.exe
+```
+
 
 kingofclubs.exe: PE32 executable (console) Intel 80386 (stripped to external PDB), for MS Windows, UPX compressed
 
-**root@igor-kali**:**~/metasploitable3**\# binwalk kingofclubs.exe
+
+```bash
+root@igor-kali:~/metasploitable3# binwalk kingofclubs.exe
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
+```
+```
 
-\--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 
 0             0x0             Microsoft executable, portable (PE)
 
 I ran it with wine
 
-**root@igor-kali**:**~/metasploitable3**\# wine kingofclubs.exe
+root@igor-kali:~/metasploitable3# wine kingofclubs.exe
 
 Could not load wine-gecko. HTML rendering will be disabled.
 
@@ -59,7 +75,7 @@ wine: configuration in ‘/root/.wine’ has been updated.
 
 Who are you? What is your true identity?
 
-**root@igor-kali**:**~/metasploitable3**\# wine kingofclubs.exe
+root@igor-kali:~/metasploitable3# wine kingofclubs.exe
 
 Who are you? What is your true identity?
 
@@ -67,7 +83,9 @@ OK…hmmm....
 
 I decompressed the UPX Exec file and copied it to my Windows host and used **OllyDbg** to take a look at the code.
 
-**root@igor-kali**:**~/metasploitable3**\# upx -d kingofclubs.exe
+
+```bash
+root@igor-kali:~/metasploitable3# upx -d kingofclubs.exe
 
                        Ultimate Packer for eXecutables
 
@@ -80,22 +98,24 @@ UPX 3.91        Markus Oberhumer, Laszlo Molnar & John Reiser   Sep 30t
    --------------------   ------   -----------   -----------
 
     962291 <-    824563   85.69%    win32/pe     kingofclubs.exe
+```
 
-Once I skipped the whole **ntdll** module all the way to the **kingofcl** module part, I noticed the stack was showing me some ASCII data that looked like the same header as the **[three\_of\_spades.png](http://gu4r15m0.blogspot.com/2017/01/the-three-of-spades.html)** I already did.
+
+Once I skipped the whole **ntdll** module all the way to the **kingofcl** module part, I noticed the stack was showing me some ASCII data that looked like the same header as the **[three_of_spades.png](http://gu4r15m0.blogspot.com/2017/01/the-three-of-spades.html)** I already did.
 
  [![](/assets/images/king_of_clubs-debug.jpg)](/assets/images/king_of_clubs-debug.jpg)
 
 PNG Header XOR 0x0F
 
-I ran an hexdump on the new decompressed exe file and searched for the characters I found in the three\_of\_spades.png
+I ran an hexdump on the new decompressed exe file and searched for the characters I found in the three_of_spades.png
 
-**root@igor-kali**:**~/metasploitable3**\# hexdump -C kingofclubs.exe | grep -A 1 \_AH
+root@igor-kali:~/metasploitable3# hexdump -C kingofclubs.exe | grep -A 1 _AH
 
 0003e000
 
 86 5f 41 48 02 05 15 05  0f 0f 0f 02 46 47 4b 5d
 
-|.\_AH........FGK\]|
+|.\_AH........FGK]|
 
 0003e010
 
@@ -103,47 +123,64 @@ I ran an hexdump on the new decompressed exe file and searched for the character
 
 |.............2S.|
 
-So I ran my byte\_xor.py script again with the same key 0x0f
+So I ran my byte_xor.py script again with the same key 0x0f
 
-**root@igor-kali**:**~/metasploitable3**\# cat byte\_xor.py
+
+```bash
+root@igor-kali:~/metasploitable3# cat byte_xor.py
 
 #!/usr/bin/python
 
-input\_file = ‘kingofclubs.exe’
+input_file = ‘kingofclubs.exe’
 
-output\_file = input\_file+’.out’
+output_file = input_file+’.out’
 
-b = bytearray(open(input\_file, ‘rb’).read())
+b = bytearray(open(input_file, ‘rb’).read())
 
 for i in range(len(b)):
 
-    b\[i\] ^= **0x0f**
+    b[i] ^= 0x0f
 
-open(output\_file, ‘wb’).write(b)
+open(output_file, ‘wb’).write(b)
+```
+
 
 ﻿Now binwalk shows me a PNG file in 0x3E000, same address my hexdump|grep did
 
-**root@igor-kali**:**~/metasploitable3**\# binwalk kingofclubs.exe.out
+
+```bash
+root@igor-kali:~/metasploitable3# binwalk kingofclubs.exe.out
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
+```
+```
 
-\--------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+
+
+```text
 253952        0x3E000         PNG image, 521 x 729, 8-bit/color RGBA, non-interlaced
 
 254014        0x3E03E         Zlib compressed data, best compression
+```
+
 
 Now I use foremost and extract the file
 
-**root@igor-kali**:**~/metasploitable3**\# foremost kingofclubs.exe.out -o king\_of\_clubs
+
+```bash
+root@igor-kali:~/metasploitable3# foremost kingofclubs.exe.out -o king_of_clubs
 
 Processing: kingofclubs.exe.out
 
 |\*|
 
-**root@igor-kali**:**~/metasploitable3**\# file king\_of\_clubs/png/00000496.png
+root@igor-kali:~/metasploitable3# file king_of_clubs/png/00000496.png
+```
 
-king\_of\_clubs/png/00000496.png: PNG image data, 521 x 729, 8-bit/color RGBA, non-interlaced
+
+king_of_clubs/png/00000496.png: PNG image data, 521 x 729, 8-bit/color RGBA, non-interlaced
 
 [![](/assets/images/king_of_clubs.jpg)](/assets/images/king_of_clubs.jpg)
 

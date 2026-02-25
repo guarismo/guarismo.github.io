@@ -15,51 +15,71 @@ meterpreter > search -f \*diamonds\*
 
 Found 6 results...
 
-    C:\\jack\_of\_diamonds.png
 
-    C:\\Program Files\\OpenSSH\\home\\Public\\Pictures\\ten\_of\_diamonds.png (406134 bytes)
+```text
+    C:\jack_of_diamonds.png
 
-    **C:\\Users\\Public\\Pictures\\ten\_of\_diamonds.png** (406134 bytes)
+    C:\Program Files\OpenSSH\home\Public\Pictures\ten_of_diamonds.png (406134 bytes)
 
-    **C:\\inetpub\\wwwroot\\six\_of\_diamonds.zip** (384916 bytes)
 
-    C:\\vagrant\\resources\\flags\\six\_of\_diamonds.zip (384916 bytes)
+    **C:\Users\Public\Pictures\ten_of_diamonds.png** (406134 bytes)
 
-    C:\\vagrant\\resources\\flags\\ten\_of\_diamonds.png (406134 bytes)
+    **C:\inetpub\wwwroot\six_of_diamonds.zip** (384916 bytes)
+```
 
+
+
+```bash
+    C:\vagrant\resources\flags\six_of_diamonds.zip (384916 bytes)
+
+    C:\vagrant\resources\flags\ten_of_diamonds.png (406134 bytes)
+
+
+```bash
 meterpreter >
+```
+```
 
-Looking at the path it seems the six\_of\_diamonds.zip file is probably on the main IIS website on port 80 so I downloaded it from there.
 
-**root@igor-kali**:**~**\# wget http://10.20.10.19/six\_of\_diamonds.zip
+Looking at the path it seems the six_of_diamonds.zip file is probably on the main IIS website on port 80 so I downloaded it from there.
 
-\--2016-12-09 23:37:15--  http://10.20.10.19/six\_of\_diamonds.zip
+
+```bash
+root@igor-kali:~# wget http://10.20.10.19/six_of_diamonds.zip
+
+\--2016-12-09 23:37:15--  http://10.20.10.19/six_of_diamonds.zip
+```
+
 
 Connecting to 10.20.10.19:80... connected.
 
 HTTP request sent, awaiting response... 200 OK
 
-Length: 384916 (376K) \[application/x-zip-compressed\]
+Length: 384916 (376K) [application/x-zip-compressed]
 
-Saving to: ‘six\_of\_diamonds.zip’
+Saving to: ‘six_of_diamonds.zip’
 
-six\_of\_diamonds.zi 100%\[================>\] 375.89K  --.-KB/s    in 0.003s 
+six_of_diamonds.zi 100%[================>] 375.89K  --.-KB/s    in 0.003s 
 
-2016-12-09 23:37:15 (105 MB/s) - ‘six\_of\_diamonds.zip’ saved \[384916/384916\]
+2016-12-09 23:37:15 (105 MB/s) - ‘six_of_diamonds.zip’ saved [384916/384916]
 
  I proceeded to use ‘unzip’ but it prompted me for a password, I tried a couple and failed, then I guessed the password. (tip: it's always the same password)
 
-**root@igor-kali**:**~**\# unzip six\_of\_diamonds.zip
 
-Archive:  six\_of\_diamonds.zip
+```bash
+root@igor-kali:~# unzip six_of_diamonds.zip
 
-\[six\_of\_diamonds.zip\] six\_of\_diamonds.png password:
+Archive:  six_of_diamonds.zip
+
+[six_of_diamonds.zip] six_of_diamonds.png password:
+```
+
 
 password incorrect--reenter:
 
 password incorrect--reenter:
 
- extracting: **six\_of\_diamonds.png**     
+ extracting: **six_of_diamonds.png**     
 
 [![](/assets/images/Six_of_Diamonds.jpg)](/assets/images/Six_of_Diamonds.jpg)
 

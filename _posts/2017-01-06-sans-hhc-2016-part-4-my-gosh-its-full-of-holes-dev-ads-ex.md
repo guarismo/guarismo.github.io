@@ -29,13 +29,13 @@ I look for debugging parameters in the APK file decoded by apktool.
 
 Searching for Debug parameters
 
-It seems the res/values/strings.xml file has the parameter we need to change and also need to interact with the EditProfile part of the app, but I changed the ***debug\_data\_enabled*** value to ***true***, recompiled and signed as explained by Josh Wright [here](https://pen-testing.sans.org/blog/2015/06/30/modifying-android-apps-a-sec575-hands-on-exercise-part-1), and also here in this [video](https://www.youtube.com/watch?v=mo2yZVRicW0), but no luck, editing the profile didn’t trigger any communication with the debug server.
+It seems the res/values/strings.xml file has the parameter we need to change and also need to interact with the EditProfile part of the app, but I changed the ***debug_data_enabled*** value to ***true***, recompiled and signed as explained by Josh Wright [here](https://pen-testing.sans.org/blog/2015/06/30/modifying-android-apps-a-sec575-hands-on-exercise-part-1), and also here in this [video](https://www.youtube.com/watch?v=mo2yZVRicW0), but no luck, editing the profile didn’t trigger any communication with the debug server.
 
-So I went back and decided to attack the logic of the ***EditProfile.smali*** file, tracing the ***debug\_data\_enabled*** variable from the ***strings*** XML to the ***public*** XML I found an ***id=0x7f07001e***.
+So I went back and decided to attack the logic of the ***EditProfile.smali*** file, tracing the ***debug_data_enabled*** variable from the ***strings*** XML to the ***public*** XML I found an ***id=0x7f07001e***.
 
 [![](/assets/images/debug-original-logic.JPG)](/assets/images/debug-original-logic.JPG)
 
-Traced the variable 0c7f07001e - debug\_data\_enabled in EditProfile.smali
+Traced the variable 0c7f07001e - debug_data_enabled in EditProfile.smali
 
 The code says that it’s compering v0 (from the strings.xml) with v3 (constant with value “true”). I decided just to change the const-string v3 value from “true” to “false”, in that way the default behavior will be to enable debug. Recompiled, resigned and push to my emulator again.
 
@@ -61,7 +61,7 @@ BurpSuite repeater showing verbose parameter
 
 JSON output with verbose=true shows MP3 file
 
-**root@igor-kali**:**~/hhack2016/dev.northpolewonderland.com**\# wget dev.northpolewonderland.com/debug-20161224235959-0.mp3
+root@igor-kali:~/hhack2016/dev.northpolewonderland.com# wget dev.northpolewonderland.com/debug-20161224235959-0.mp3
 
 \--2016-12-26 14:10:55--  http://dev.northpolewonderland.com/debug-20161224235959-0.mp3
 
@@ -71,13 +71,13 @@ Connecting to dev.northpolewonderland.com (dev.northpolewonderland.com)|35.184.6
 
 HTTP request sent, awaiting response... 200 OK
 
-Length: 218033 (213K) \[audio/mpeg\]
+Length: 218033 (213K) [audio/mpeg]
 
 Saving to: ‘debug-20161224235959-0.mp3’
 
-debug-20161224235959-0.mp3         100%\[===================================>\] 212.92K  --.-KB/s    in 0.1s   
+debug-20161224235959-0.mp3         100%[===================================>] 212.92K  --.-KB/s    in 0.1s   
 
-2016-12-26 14:10:55 (1.54 MB/s) - ‘debug-20161224235959-0.mp3’ saved \[218033/218033\]
+2016-12-26 14:10:55 (1.54 MB/s) - ‘debug-20161224235959-0.mp3’ saved [218033/218033]
 
 -   The Banner Ad Server
 
@@ -169,4 +169,4 @@ MP3 reference found in exception.php
 
 The file can be downloaded from [http://ex.northpolewonderland.com/discombobulated-audio-6-XyzE3N9YqKNH.mp3](http://ex.northpolewonderland.com/discombobulated-audio-6-XyzE3N9YqKNH.mp3)
 
-NOTE: If you noticed, the crashdump files are PHP and are executed by the server if you point a browser to it or curl it, it just prints back the data you sent to the ***exception.php***. If you look at the code, you can inject your own PHP code to it, actually, other players used a print\_r(scandir('..')) to list the files and found the MP3 instead of the base64 exfiltration. You can do more than that 😏
+NOTE: If you noticed, the crashdump files are PHP and are executed by the server if you point a browser to it or curl it, it just prints back the data you sent to the ***exception.php***. If you look at the code, you can inject your own PHP code to it, actually, other players used a print_r(scandir('..')) to list the files and found the MP3 instead of the base64 exfiltration. You can do more than that 😏

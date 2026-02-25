@@ -60,13 +60,17 @@ Now we look at Santa's instagram account and find an interesting photo
 
 @santawclaus Instagram - Zoom In for details
 
-In this image we can see one of the Bug Bounty elves was working on a domain called [northpolewonderland.com](http://northpolewonderland.com/) and the Laptop computer screen is showing a file called SantaGram\_v4.2.zip
+In this image we can see one of the Bug Bounty elves was working on a domain called [northpolewonderland.com](http://northpolewonderland.com/) and the Laptop computer screen is showing a file called SantaGram_v4.2.zip
 
-We can just point our browser to [http://northpolewonderland.com/SantaGram\_v4.2.zip](http://northpolewonderland.com/SantaGram_v4.2.zip) and download the file, or use wget
+We can just point our browser to [http://northpolewonderland.com/SantaGram_v4.2.zip](http://northpolewonderland.com/SantaGram_v4.2.zip) and download the file, or use wget
 
-igor@KYLO-REN:~$ wget http://northpolewonderland.com/SantaGram\_v4.2.zip
 
-\--2016-12-24 01:27:05--  http://northpolewonderland.com/SantaGram\_v4.2.zip
+```text
+igor@KYLO-REN:~$ wget http://northpolewonderland.com/SantaGram_v4.2.zip
+
+\--2016-12-24 01:27:05--  http://northpolewonderland.com/SantaGram_v4.2.zip
+```
+
 
 Resolving northpolewonderland.com (northpolewonderland.com)... 130.211.124.143
 
@@ -74,24 +78,28 @@ Connecting to northpolewonderland.com (northpolewonderland.com)|130.211.124.143|
 
 HTTP request sent, awaiting response... 200 OK
 
-Length: 1963026 (1.9M) \[application/zip\]
+Length: 1963026 (1.9M) [application/zip]
 
-Saving to: ‘SantaGram\_4.2.zip’
+Saving to: ‘SantaGram_4.2.zip’
 
-100%\[===================================================================>\] 1,963,026   3.33MB/s   in 0.6s
+100%[===================================================================>] 1,963,026   3.33MB/s   in 0.6s
 
-2016-12-24 01:27:06 (3.33 MB/s) - ‘SantaGram\_v4.2.zip’ saved \[1963026/1963026\]
+2016-12-24 01:27:06 (3.33 MB/s) - ‘SantaGram_v4.2.zip’ saved [1963026/1963026]
 
 And Unzip…
 
 Can you guess the password? ;)
 
-igor@KYLO-REN:~$ unzip SantaGram\_v4.2.zip
-Archive:  SantaGram\_v4.2.zip
-\[SantaGram\_v4.2.zip\]
-SantaGram\_4.2.apk password: ß bugbounty worked!  
-inflating: SantaGram\_4.2.apk
 
-By the way, there are two copies of the file in the server, one called **SantaGram\_v4.2.zip** like the Instagram says, and one called **SantaGram\_4.2.zip**, found it with a typo.
+```text
+igor@KYLO-REN:~$ unzip SantaGram_v4.2.zip
+Archive:  SantaGram_v4.2.zip
+[SantaGram_v4.2.zip]
+SantaGram_4.2.apk password: ß bugbounty worked!  
+inflating: SantaGram_4.2.apk
+```
+
+
+By the way, there are two copies of the file in the server, one called **SantaGram_v4.2.zip** like the Instagram says, and one called **SantaGram_4.2.zip**, found it with a typo.
 
 We have an android app!

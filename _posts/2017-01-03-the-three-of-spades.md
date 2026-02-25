@@ -17,9 +17,14 @@ author: gu4r15sm0
 
 *Once I had a SSH console on the server I went into the Windows folder and listed the files.*
 
-**root@igor-kali**:**~**\# ssh Administrator@10.20.10.19
+
+```bash
+root@igor-kali:~# ssh Administrator@10.20.10.19
 
 Administrator@10.20.10.19’s password:
+```
+```
+
 
 Last login: Thu Dec 15 21:01:49 2016 from 10.20.10.50
 
@@ -103,7 +108,7 @@ ServiceProfiles        system
 
 Setup                  system.ini
 
-SoftwareDistribution   **three\_of\_spades.png**
+SoftwareDistribution   **three_of_spades.png**
 
 Speech                 tracing
 
@@ -119,13 +124,17 @@ TAPI                   write.exe
 
 ﻿ ﻿\-sh-4.3$ bash
 
-Microsoft Windows \[Version 6.1.7601\]
+Microsoft Windows [Version 6.1.7601]
 
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
-C:\\Users\\Administrator>cd\\
 
-C:\\>dir **/AH** windows
+```text
+C:\Users\Administrator>cd\
+
+C:\>dir /AH windows
+```
+
 
  Volume in drive C is Windows 2008R2
 
@@ -135,7 +144,7 @@ C:\\>dir **/AH** windows
 
 12/15/2016  06:53 PM    <DIR>          Installer
 
-11/25/2016  05:47 PM           519,696 **three\_of\_spades.png**
+11/25/2016  05:47 PM           519,696 **three_of_spades.png**
 
 07/13/2009  08:57 PM               749 WindowsShell.Manifest
 
@@ -143,15 +152,20 @@ C:\\>dir **/AH** windows
 
 *I  downloaded it with scp*
 
-**root@igor-kali**:**~**\# scp Administrator@10.20.10.19:/cygdrive/c/Windows/three\_of\_spades.png .
+
+```bash
+root@igor-kali:~# scp Administrator@10.20.10.19:/cygdrive/c/Windows/three_of_spades.png .
 
 Administrator@10.20.10.19’s password:
+```
+```
 
-three\_of\_spades.png          
 
-**root@igor-kali**:**~/metasploitable3**\# file three\_of\_spades.png
+three_of_spades.png          
 
-three\_of\_spades.png: data
+root@igor-kali:~/metasploitable3# file three_of_spades.png
+
+three_of_spades.png: data
 
 *I noticed the file is not in PNG format, but it still has a PNG extension so maybe something was done to the content.*
 
@@ -163,7 +177,7 @@ BAD
 
 86 5f 41 48 02 05 15 05  0f 0f 0f 02 46 47 4b 5d
 
-|.\_AH........FGK\]|
+|.\_AH........FGK]|
 
 GOOD
 
@@ -193,31 +207,35 @@ GOOD
 
 *I made a pyhton script:*
 
-**root@igor-kali**:**~/metasploitable3**\# cat byte\_xor.py
+
+```bash
+root@igor-kali:~/metasploitable3# cat byte_xor.py
 
 #!/usr/bin/python
 
-input\_file = ‘three\_of\_spades.png’s;
+input_file = ‘three_of_spades.png’s;
 
-output\_file = input\_file+’.out’;
+output_file = input_file+’.out’;
 
-b = bytearray(open(input\_file, ‘rb’).read())
+b = bytearray(open(input_file, ‘rb’).read())
 
 for i in range(len(b)):
 
-    b\[i\] ^= 0x0f
+    b[i] ^= 0x0f
 
-open(output\_file, ‘wb’).write(b)
+open(output_file, ‘wb’).write(b)
 
 *Ran my script*
 
-**root@igor-kali**:**~/metasploitable3**\# file three\_of\_spades.png
+root@igor-kali:~/metasploitable3# file three_of_spades.png
 
-three\_of\_spades.png      three\_of\_spades.png.out 
+three_of_spades.png      three_of_spades.png.out 
 
-**root@igor-kali**:**~/metasploitable3**\# file three\_of\_spades.png.out
+root@igor-kali:~/metasploitable3# file three_of_spades.png.out
+```
 
-three\_of\_spades.png.out: **PNG** image data, 521 x 729, 8-bit/color RGBA, non-interlaced
+
+three_of_spades.png.out: **PNG** image data, 521 x 729, 8-bit/color RGBA, non-interlaced
 
 [![](/assets/images/three_of_clubs.jpg)](/assets/images/three_of_clubs.jpg)
 

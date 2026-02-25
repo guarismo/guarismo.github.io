@@ -125,7 +125,7 @@ You're looking for a "document" that appears to be involved with kicking off all
 
 So I've come up with my own search to make the conversion from hex to dec and join the results, and instead of |revers I used |sort - \_time because all habits don't die
 
-*index=main process\_id=\* user=\*cbanas\* | rename process\_id AS pid | join pid max=0 \[search index=main sourcetype=WinEventLog EventCode=4688 | eval **ppid=tonumber(Creator\_Process\_ID,16), pid=tonumber(New\_Process\_ID,16)**| table \_time ppid Creator\* pid New\_Process\_Name Process\_Command\_Line Process\_Command\_Line\] | table \_time ppid Creator\* pid New\_Process\_Name Process\_Command\_Line | search New\_Process\_Name=\*powershell\* | sort  \_time*
+*index=main process_id=\* user=\*cbanas\* | rename process_id AS pid | join pid max=0 [search index=main sourcetype=WinEventLog EventCode=4688 | eval **ppid=tonumber(Creator_Process_ID,16), pid=tonumber(New_Process_ID,16)**| table \_time ppid Creator\* pid New_Process_Name Process_Command_Line Process_Command_Line] | table \_time ppid Creator\* pid New_Process_Name Process_Command_Line | search New_Process_Name=\*powershell\* | sort  \_time*
 
 This gives us a list of PowerShell processes created and it's creator sort ascending by time, so the first time a powershell is executed is listed first, this happened 2019-08-25 at 17:38:35.
 
@@ -133,7 +133,7 @@ This gives us a list of PowerShell processes created and it's creator sort ascen
 
 Following Alice's pivoting tip, we then look for a WINWORD process executed just before the powershell being spawned.
 
-*index=main sourcetype=WinEventLog EventCode=4688 New\_Process\_Name=\*WINWORD\* | eval ppid=tonumber(Creator\_Process\_ID,16), pid=tonumber(New\_Process\_ID,16)|  table \_time  Process\_Command\_Line*
+*index=main sourcetype=WinEventLog EventCode=4688 New_Process_Name=\*WINWORD\* | eval ppid=tonumber(Creator_Process_ID,16), pid=tonumber(New_Process_ID,16)|  table \_time  Process_Command_Line*
 
 [![](/assets/images/splunk-1.3.2.jpg)](/assets/images/splunk-1.3.2.jpg)
 
@@ -215,7 +215,7 @@ Look, I was not about to put the actual malicious executable content into this t
     
 -   Alice Bluebird
     
-    Look in the 'results' array. Each element contains the name of the file that stoQ extracted in the 'results->payload\_meta->extra\_data->filename' field. And when you find one of interest, use the associated 'results->archivers->filedir->path' field to guide you through the File Archive.
+    Look in the 'results' array. Each element contains the name of the file that stoQ extracted in the 'results->payload_meta->extra_data->filename' field. And when you find one of interest, use the associated 'results->archivers->filedir->path' field to guide you through the File Archive.
     
 
 -   Alice Bluebird
@@ -224,7 +224,7 @@ Look, I was not about to put the actual malicious executable content into this t
     
     | eval results = spath(\_raw, "results{}") 
     | mvexpand results
-    | eval path=spath(results, "archivers.filedir.path"), filename=spath(results, "payload\_meta.extra\_data.filename"), fullpath=path."/".filename 
+    | eval path=spath(results, "archivers.filedir.path"), filename=spath(results, "payload_meta.extra_data.filename"), fullpath=path."/".filename 
     | search fullpath!="" 
     | table filename,fullpath
     
@@ -236,7 +236,7 @@ Look, I was not about to put the actual malicious executable content into this t
 Alrighty, enough said... we need to look for a core.xml file, let's use a combination of the searches Alice gave us but including the string password to get files related to the email in question.
 *index=main sourcetype=stoq  "results{}.workers.smtp.from"="bradly buttercups <bradly.buttercups@eifu.org>" password | eval results = spath(\_raw, "results{}")* 
 *| mvexpand results*
-*| eval path=spath(results, "archivers.filedir.path"), filename=spath(results, "payload\_meta.extra\_data.filename"), fullpath=path."/".filename* 
+*| eval path=spath(results, "archivers.filedir.path"), filename=spath(results, "payload_meta.extra_data.filename"), fullpath=path."/".filename* 
 *| search fullpath!=""* 
 *| table filename,fullpath*
 

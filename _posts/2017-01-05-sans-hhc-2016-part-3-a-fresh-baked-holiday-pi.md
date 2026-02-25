@@ -37,7 +37,7 @@ Following the [article](https://pen-testing.sans.org/blog/2016/12/07/mount-a-ras
 
 Another elf, Minty Candycane, had a tip about John the Ripper and what password database to use (Rockyou), and that’s what I used to crack the password in about 20 min while I walked through the park collecting NetWar coins J
 
-**root@igor-kali**:**/mnt/etc**\# john --wordlist=/usr/share/wordlists/rockyou.txt shadow
+root@igor-kali:/mnt/etc# john --wordlist=/usr/share/wordlists/rockyou.txt shadow
 
 Warning: detected hash type "sha512crypt", but the string is also recognized as "crypt"
 
@@ -45,7 +45,7 @@ Use the "--format=crypt" option to force loading these as that type instead
 
 Using default input encoding: UTF-8
 
-Loaded 1 password hash (sha512crypt, crypt(3) $6$ \[SHA512 128/128 AVX 2x\])
+Loaded 1 password hash (sha512crypt, crypt(3) $6$ [SHA512 128/128 AVX 2x])
 
 Press 'q' or Ctrl-C to abort, almost any other key for status
 
@@ -99,23 +99,27 @@ The ***file*** command is missing in this terminal, that would've help solve thi
 
 So playing with the strings command we found different options
 
+
+```text
 $ strings --help
 
-Usage: strings \[option(s)\] \[file(s)\]
+Usage: strings [option(s)] [file(s)]
+```
 
- Display printable strings in \[file(s)\] (stdin by default)
+
+ Display printable strings in [file(s)] (stdin by default)
 
  The options are:
 
-  -a - --all                Scan the entire file, not just the data section \[default\]
+  -a - --all                Scan the entire file, not just the data section [default]
 
   -d --data                 Only scan the data sections in the file
 
   -f --print-file-name      Print the name of the file before each string
 
-  -n --bytes=\[number\]       Locate & print any NUL-terminated sequence of at
+  -n --bytes=[number]       Locate & print any NUL-terminated sequence of at
 
-  -<number>                   least \[number\] characters (default 4).
+  -<number>                   least [number] characters (default 4).
 
   -t --radix={o,d,x}        Print the location of the string in base 8, 10 or 16
 
@@ -147,7 +151,7 @@ So the password is ***santaslittlehelper***
 
 I managed to make a copy of the pcacp file to my machine and this is what the file command returns
 
-**root@igor-kali**:**~/hhack2016**\# file out.pcap
+root@igor-kali:~/hhack2016# file out.pcap
 
 out.pcap: tcpdump capture file (**little-endian**) - version 2.4 (Ethernet, capture length 262144)
 
@@ -167,15 +171,22 @@ Care for a ride?
 
 Here we go…
 
+
+```text
 elf@4f0fa5334794:~/.doormat/. $ ls
 
-   bin  not\_here
+   bin  not_here
 
+
+```text
 elf@4f0fa5334794:~/.doormat/. $ cd bin
 
 elf@4f0fa5334794:~/.doormat/. /bin$ ls
 
 elf@4f0fa5334794:~/.doormat/. /bin$ ls -al
+```
+```
+
 
 total 8
 
@@ -183,11 +194,16 @@ drwxr-xr-x  2 root root 4096 Dec  6 19:39 .
 
 drwxr-xr-x 16 root root 4096 Dec  6 19:40 ..
 
+
+```text
 elf@4f0fa5334794:~/.doormat/. /bin$ cd ..
 
-elf@4f0fa5334794:~/.doormat/. $ cd not\_here
+elf@4f0fa5334794:~/.doormat/. $ cd not_here
 
-elf@4f0fa5334794:~/.doormat/. /not\_here$ ls -al
+elf@4f0fa5334794:~/.doormat/. /not_here$ ls -al
+```
+```
+
 
 total 8
 
@@ -195,9 +211,14 @@ drwxr-xr-x  2 root root 4096 Dec  6 19:39 .
 
 drwxr-xr-x 16 root root 4096 Dec  6 19:40 ..
 
-elf@4f0fa5334794:~/.doormat/. /not\_here$ cd ..
+
+```text
+elf@4f0fa5334794:~/.doormat/. /not_here$ cd ..
 
 elf@4f0fa5334794:~/.doormat/. $ l s-al
+```
+```
+
 
 bash: l: command not found
 
@@ -213,15 +234,21 @@ drwxr-xr-x 18 root root 4096 Dec  6 19:40 ..
 
 drwxr-xr-x  2 root root 4096 Dec  6 19:39 bin
 
-drwxr-xr-x  2 root root 4096 Dec  6 19:39 not\_here
+drwxr-xr-x  2 root root 4096 Dec  6 19:39 not_here
 
-elf@4f0fa5334794:~/.doormat/. $ cd \\
+
+```text
+elf@4f0fa5334794:~/.doormat/. $ cd \
 
 elf@4f0fa5334794:~/.doormat/. / $ ls
+```
 
-\\  opt  var
+
+\  opt  var
 
 elf@4f0fa5334794:~/.doormat/. / $ ls -al
+```
+
 
 total 20
 
@@ -235,13 +262,19 @@ drwxr-xr-x  2 root root 4096 Dec  6 19:40 opt
 
 drwxr-xr-x  2 root root 4096 Dec  6 19:39 var
 
-elf@4f0fa5334794:~/.doormat/. / $ cd \\\\
 
-elf@4f0fa5334794:~/.doormat/. / /\\$ ls
+```text
+elf@4f0fa5334794:~/.doormat/. / $ cd \
 
-\\\\  ls  santa
+elf@4f0fa5334794:~/.doormat/. / /\$ ls
+```
 
-elf@4f0fa5334794:~/.doormat/. / /\\$ ls -al
+
+\\  ls  santa
+
+elf@4f0fa5334794:~/.doormat/. / /\$ ls -al
+```
+
 
 total 20
 
@@ -255,21 +288,33 @@ drwxr-xr-x  2 root root 4096 Dec  6 19:40 ls
 
 drwxr-xr-x  2 root root 4096 Dec  6 19:40 santa
 
-elf@4f0fa5334794:~/.doormat/. / /\\$ cd \\\\\\
 
-\> \\
+```text
+elf@4f0fa5334794:~/.doormat/. / /\$ cd \\
+
+\> \
 
 \> ^C
 
-elf@4f0fa5334794:~/.doormat/. / /\\$ cd \\\\\\\\
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\$ ls
+```text
+elf@4f0fa5334794:~/.doormat/. / /\$ cd \\
+
+elf@4f0fa5334794:~/.doormat/. / /\/\$ ls
+```
+```
+
 
 Don't Look Here!  holiday  temp
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\$ cd Don\\'t\\ Look\\ Here\\!
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!$ ls -al
+```text
+elf@4f0fa5334794:~/.doormat/. / /\/\$ cd Don\'t\ Look\ Here\!
+
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!$ ls -al
+```
+```
+
 
 total 20
 
@@ -283,11 +328,16 @@ drwxr-xr-x  2 root root 4096 Dec  6 19:40 files
 
 drwxr-xr-x  2 root root 4096 Dec  6 19:40 secret
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!$ cd secret
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/secret$ ls
+```text
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!$ cd secret
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/secret$ ls -al
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/secret$ ls
+
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/secret$ ls -al
+```
+```
+
 
 total 8
 
@@ -295,15 +345,24 @@ drwxr-xr-x 2 root root 4096 Dec  6 19:40 .
 
 drwxr-xr-x 8 root root 4096 Dec  6 19:40 ..
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/secret$ cd ..
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!$ cd You\\ are\\ persistent\\,\\ aren\\\`t\\ you\\?
+```text
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/secret$ cd ..
+
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!$ cd You\ are\ persistent\,\ aren\`t\ you\?
+```
+
 
 bash: cd: You are persistent, aren\`t you?: No such file or directory
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!$ cd You\\ are\\ persistent\\,\\ aren\\'t\\ you\\?
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/You are persistent, aren't you?$ ls -al
+```text
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!$ cd You\ are\ persistent\,\ aren\'t\ you\?
+
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/You are persistent, aren't you?$ ls -al
+```
+```
+
 
 total 20
 
@@ -317,9 +376,14 @@ drwxr-xr-x 2 root root 4096 Dec  6 19:40 cookbook
 
 drwxr-xr-x 2 root root 4096 Dec  6 19:40 temp
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/You are persistent, aren't you?$ cd \\'
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/You are persistent, aren't you?/'$ ls -al
+```text
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/You are persistent, aren't you?$ cd \'
+
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/You are persistent, aren't you?/'$ ls -al
+```
+```
+
 
 total 12
 
@@ -327,11 +391,11 @@ drwxr-xr-x 2 root root 4096 Dec  6 19:40 .
 
 drwxr-xr-x 6 root root 4096 Dec  6 19:40 ..
 
-\-rw-r--r-- 1 root root   17 Dec  6 19:39 key\_for\_the\_door.txt
+\-rw-r--r-- 1 root root   17 Dec  6 19:39 key_for_the_door.txt
 
-elf@4f0fa5334794:~/.doormat/. / /\\/\\\\/Don't Look Here!/You are persistent, aren't you?/'$ cat  key\_for\_the\_door.txt
+elf@4f0fa5334794:~/.doormat/. / /\/\/Don't Look Here!/You are persistent, aren't you?/'$ cat  key_for_the_door.txt
 
-key: **open\_sesame**
+key: **open_sesame**
 
 **The Wumpus**
 

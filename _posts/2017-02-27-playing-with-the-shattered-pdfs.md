@@ -22,6 +22,8 @@ Collision / BAD PDF
 
 Both files have the same SHA1 hash:
 
+
+```text
 igor@KYLO-REN:~$ sha1sum good.pdf bad.pdf
 d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a good.pdf
 d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a bad.pdf
@@ -29,6 +31,8 @@ d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a bad.pdf
 Here's a diff of their Base64:
 
 igor@KYLO-REN:~$ diff --side-by-side good.pdf.b64 bad.pdf.b64
+```
+
 JVBERi0xLjMKJeLjz9MKCgoxIDAgb2JqCjw8L1dpZHRoIDIgMCBSL0hlaWdod   JVBERi0xLjMKJeLjz9MKCgoxIDAgb2JqCjw8L1dpZHRoIDIgMCBSL0hlaWdod
 IDQgMCBSL1N1YnR5cGUgNSAwIFIvRmlsdGVyIDYgMCBSL0NvbG9yU3BhY2UgN   IDQgMCBSL1N1YnR5cGUgNSAwIFIvRmlsdGVyIDYgMCBSL0NvbG9yU3BhY2UgN
 IDggMCBSL0JpdHNQZXJDb21wb25lbnQgOD4+CnN0cmVhbQr/2P/+ACRTSEEtM   IDggMCBSL0JpdHNQZXJDb21wb25lbnQgOD4+CnN0cmVhbQr/2P/+ACRTSEEtM

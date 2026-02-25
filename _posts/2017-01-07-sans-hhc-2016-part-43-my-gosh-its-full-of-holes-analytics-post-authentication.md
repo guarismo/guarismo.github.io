@@ -93,7 +93,7 @@ Using view.php and the report id it shows the file we want but the blob doesn't 
 
 I use the ***edit.php*** to insert a new query that will return the content of the mp3 file in base64 format:
 
-*SELECT TO\_BASE64(**mp3**) from **audio** where **username**\=’administrator’*
+*SELECT TO_BASE64(**mp3**) from **audio** where **username**\=’administrator’*
 
 [![](/assets/images/sql-base64-audio.jpg)](/assets/images/sql-base64-audio.jpg)
 
@@ -105,9 +105,14 @@ And use the ***view.php*** with the ***id*** again to execute my new query, whic
 
 I selected the base64 result and store it in my Kali linux to be decoded back to mp3 using the base64 command.
 
-﻿**root@igor-kali**:**~/hhack2016/analytics.northpolewonderland.com**\# cat mp3.b64 |sed ‘s/ //g’ | base64 -d > discombobulatedaudio7.mp3
 
-**root@igor-kali**:**~/hhack2016/analytics.northpolewonderland.com**\# file discombobulatedaudio7.mp3
+```bash
+root@igor-kali:~/hhack2016/analytics.northpolewonderland.com# cat mp3.b64 |sed ‘s/ //g’ | base64 -d > discombobulatedaudio7.mp3
+
+root@igor-kali:~/hhack2016/analytics.northpolewonderland.com# file discombobulatedaudio7.mp3
+```
+```
+
 
 discombobulatedaudio7.mp3: Audio file with ID3 version 2.3.0, contains: MPEG ADTS, layer III, v1, 128 kbps, 44.1 kHz, JntStereo
 
