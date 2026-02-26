@@ -61,6 +61,23 @@ Annual CTF challenges from SANS — featuring puzzles, exploitation, forensics, 
 
 ---
 
+<div class="category-section" id="hhc-2017">
+
+### 🎄 Holiday Hack Challenge 2017
+
+<ul class="post-list">
+{% assign posts = site.posts | where_exp: "post", "post.tags contains 'hhc-2017'" | sort: 'date' %}
+{% for post in posts %}
+<li>
+  <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+</li>
+{% endfor %}
+</ul>
+</div>
+
+---
+
 <div class="category-section" id="hhc-2016">
 
 ### 🎄 Holiday Hack Challenge 2016
