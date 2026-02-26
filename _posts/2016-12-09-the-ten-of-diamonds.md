@@ -171,12 +171,8 @@ display: improper image header \`ten_of_diamonds.png' @ error/png.c/ReadPNGImage
 
 ImageMagick didn't like it either, let's take a closer look
 
-﻿
-
-C**root@igor-kali**:**~**\# binwalk ten_of_diamonds.png 
-
-
-```text
+```bash
+root@igor-kali:~# binwalk ten_of_diamonds.png
 DECIMAL       HEXADECIMAL     DESCRIPTION
 --------------------------------------------------------------------------------
 62            0x3E            Zlib compressed data, best compression
