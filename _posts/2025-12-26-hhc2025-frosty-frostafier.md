@@ -6,7 +6,7 @@ author: gu4r15m0
 category: sans-hhc
 tags: [sans, hhc-2025, ctf, web, ssti, steganography]
 ---
-
+{% raw %}
 # SANS Holiday Hack Challenge 2025 - Frosty Frostafier
 
 > **Flag:** `hhc25{Frostify_The_World_c05730b46d0f30c9d068343e9d036f80}`
@@ -543,3 +543,5 @@ echo ""
 Challenge completed as part of SANS Holiday Hack Challenge 2025
 
 **Tools Used:** Python, Burp Suite, John the Ripper, LinPEAS, curl, webhook.site
+
+{% endraw %}
