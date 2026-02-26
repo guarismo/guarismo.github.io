@@ -9,6 +9,8 @@
       url: /ctf/sans-hhc/
       icon: "🎄"
       children:
+        - title: HHC 2025
+          tag: hhc-2025
         - title: HHC 2022
           tag: hhc-2022
         - title: HHC 2019
