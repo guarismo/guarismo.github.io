@@ -25,7 +25,6 @@ root@igor-kali:~# ssh Administrator@10.20.10.19
 
 Administrator@10.20.10.19’s password:
 ```
-```
 
 
 Last login: Thu Dec 15 21:01:49 2016 from 10.20.10.50
@@ -160,26 +159,26 @@ root@igor-kali:~# scp Administrator@10.20.10.19:/cygdrive/c/Windows/three_of_spa
 
 Administrator@10.20.10.19’s password:
 ```
-```
 
 
-three_of_spades.png          
-
+```text
+three_of_spades.png          
 root@igor-kali:~/metasploitable3# file three_of_spades.png
-
 three_of_spades.png: data
+```
 
 *I noticed the file is not in PNG format, but it still has a PNG extension so maybe something was done to the content.*
 
 *Since I know how a good PNG starts I decide to compare both files headers:*
 
+```text
 BAD
 
 00000000
 
 86 5f 41 48 02 05 15 05  0f 0f 0f 02 46 47 4b 5d
 
-|.\_AH........FGK]|
+|._AH........FGK]|
 
 GOOD
 
@@ -203,7 +202,8 @@ GOOD
 
 00 00 02 09 00 00 02 d9  08 06 00 00 00 3d 5c b2
 
-|.............=\\.|
+|.............=\.|
+```
 
 *If you do a XOR byte to bad between good and bad, you get 0f so that’s our encryption key*
 
@@ -234,10 +234,8 @@ root@igor-kali:~/metasploitable3# file three_of_spades.png
 three_of_spades.png      three_of_spades.png.out 
 
 root@igor-kali:~/metasploitable3# file three_of_spades.png.out
+three_of_spades.png.out: PNG image data, 521 x 729, 8-bit/color RGBA, non-interlaced
 ```
-
-
-three_of_spades.png.out: **PNG** image data, 521 x 729, 8-bit/color RGBA, non-interlaced
 
 [![](/assets/images/three_of_clubs.jpg)](/assets/images/three_of_clubs.jpg)
 
