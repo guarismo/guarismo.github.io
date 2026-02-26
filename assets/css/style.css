@@ -2,6 +2,14 @@
    Hacker Theme - Custom Sidebar Layout
    ============================================ */
 
+:root {
+  --green: #b5e853;
+  --cyan: #63c0f5;
+  --orange: #f0a500;
+  --red: #ff2244;
+  --purple: #bf5fff;
+}
+
 /* Reset & Base */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,7 +42,8 @@ a:hover {
   width: 280px;
   height: 100vh;
   background: #0d1117;
-  border-right: 1px solid #30363d;
+  border-right: 2px solid var(--green);
+  box-shadow: 4px 0 20px rgba(181, 232, 83, 0.12);
   overflow-y: auto;
   z-index: 1000;
   transform: translateX(-100%);
@@ -103,7 +112,9 @@ a:hover {
 
 .nav-link:hover {
   background: #161b22;
-  color: #b5e853;
+  color: var(--green);
+  border-left: 2px solid var(--orange);
+  padding-left: 14px;
 }
 
 .nav-icon {
@@ -167,14 +178,18 @@ a:hover {
 .page-header {
   background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1a2e 100%);
   padding: 30px 40px;
-  border-bottom: 2px solid #b5e853;
+  border-bottom: 2px solid var(--green);
+  border-left: 4px solid var(--orange);
 }
 
 .page-header h1 {
-  color: #b5e853;
+  color: var(--green);
   font-size: 28px;
   margin-bottom: 4px;
-  text-shadow: 0 0 10px rgba(181, 232, 83, 0.3);
+  text-shadow:
+    0 0 8px rgba(181, 232, 83, 0.6),
+    0 0 24px rgba(181, 232, 83, 0.35),
+    0 0 48px rgba(181, 232, 83, 0.15);
 }
 
 .project-tagline {
@@ -192,14 +207,26 @@ a:hover {
    Typography
    ============================================ */
 h1, h2, h3, h4 {
-  color: #b5e853;
+  color: var(--green);
   margin-top: 24px;
   margin-bottom: 12px;
 }
 
 h1 { font-size: 24px; }
-h2 { font-size: 20px; border-bottom: 1px solid #30363d; padding-bottom: 6px; }
-h3 { font-size: 16px; }
+h2 {
+  font-size: 20px;
+  border-bottom: 1px solid var(--green);
+  padding-bottom: 6px;
+  text-shadow: 0 0 8px rgba(181, 232, 83, 0.3);
+}
+h3 {
+  font-size: 16px;
+  color: var(--red);
+  text-shadow: 0 0 6px rgba(255, 34, 68, 0.3);
+}
+h4 {
+  color: var(--orange);
+}
 
 p {
   margin-bottom: 16px;
@@ -216,7 +243,8 @@ em, i {
 
 hr {
   border: none;
-  border-top: 1px solid #30363d;
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), var(--orange), transparent);
   margin: 24px 0;
 }
 
@@ -226,6 +254,7 @@ hr {
 pre {
   background: #0d1117;
   border: 1px solid #30363d;
+  border-left: 3px solid var(--orange);
   border-radius: 6px;
   padding: 16px;
   overflow-x: auto;
@@ -285,8 +314,14 @@ li {
 }
 
 .post-list li {
-  padding: 12px 0;
+  padding: 12px 0 12px 12px;
   border-bottom: 1px solid #30363d;
+  border-left: 2px solid var(--green);
+  transition: border-left-color 0.2s ease;
+}
+
+.post-list li:hover {
+  border-left-color: var(--orange);
 }
 
 .post-list a {
@@ -299,7 +334,7 @@ li {
 }
 
 .post-list .post-date {
-  color: #484f58;
+  color: var(--orange);
   font-size: 12px;
   display: block;
   margin-top: 2px;
@@ -311,21 +346,28 @@ li {
 
 .post-list .post-tags span {
   display: inline-block;
-  background: #161b22;
-  color: #8b949e;
+  background: rgba(191, 95, 255, 0.1);
+  color: var(--purple);
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 12px;
   margin-right: 4px;
-  border: 1px solid #30363d;
+  border: 1px solid var(--purple);
+}
+
+.post-meta span {
+  background: rgba(191, 95, 255, 0.1) !important;
+  color: var(--purple) !important;
+  border-color: var(--purple) !important;
 }
 
 /* Category section headers */
 .category-section h3 {
   margin-top: 30px;
   padding: 8px 0;
-  border-bottom: 1px solid #b5e853;
-  color: #b5e853;
+  border-bottom: 1px solid var(--green);
+  color: var(--green);
+  text-shadow: 0 0 8px rgba(181, 232, 83, 0.3);
 }
 
 /* ============================================
@@ -472,39 +514,41 @@ td {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: rgba(181, 232, 83, 0.35);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #484f58;
+  background: rgba(181, 232, 83, 0.6);
 }
 
 /* ============================================
    Post meta
    ============================================ */
 .post-meta {
-  color: #484f58;
+  color: var(--orange);
   font-size: 13px;
   margin-bottom: 24px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #30363d;
+  border-bottom: 1px solid var(--orange);
 }
 
 .back-link {
   display: inline-block;
   margin-top: 24px;
   padding: 8px 16px;
-  border: 1px solid #30363d;
+  border: 1px solid var(--orange);
   border-radius: 4px;
-  color: #8b949e;
+  color: var(--orange);
   font-size: 13px;
+  transition: all 0.2s ease;
 }
 
 .back-link:hover {
-  border-color: #b5e853;
-  color: #b5e853;
+  border-color: var(--green);
+  color: var(--green);
   text-decoration: none;
+  box-shadow: 0 0 8px rgba(181, 232, 83, 0.2);
 }
 
 /* ============================================
