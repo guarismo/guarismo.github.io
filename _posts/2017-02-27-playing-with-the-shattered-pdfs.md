@@ -29,12 +29,15 @@ Both files have the same SHA1 hash:
 igor@KYLO-REN:~$ sha1sum good.pdf bad.pdf
 d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a good.pdf
 d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a bad.pdf
+```
 
 Here's a diff of their Base64:
 
+```text
 igor@KYLO-REN:~$ diff --side-by-side good.pdf.b64 bad.pdf.b64
 ```
 
+```text
 JVBERi0xLjMKJeLjz9MKCgoxIDAgb2JqCjw8L1dpZHRoIDIgMCBSL0hlaWdod   JVBERi0xLjMKJeLjz9MKCgoxIDAgb2JqCjw8L1dpZHRoIDIgMCBSL0hlaWdod
 IDQgMCBSL1N1YnR5cGUgNSAwIFIvRmlsdGVyIDYgMCBSL0NvbG9yU3BhY2UgN   IDQgMCBSL1N1YnR5cGUgNSAwIFIvRmlsdGVyIDYgMCBSL0NvbG9yU3BhY2UgN
 IDggMCBSL0JpdHNQZXJDb21wb25lbnQgOD4+CnN0cmVhbQr/2P/+ACRTSEEtM   IDggMCBSL0JpdHNQZXJDb21wb25lbnQgOD4+CnN0cmVhbQr/2P/+ACRTSEEtM
@@ -83,6 +86,7 @@ MTkyMiAwMDAwMCBuIAowMDAwMDAxOTQ1IDAwMDAwIG4gCjAwMDAwMDE5NzIgM   MTkyMiAwMDAwMCB
 MDAwMTk5OSAwMDAwMCBuIAowMDAwMDAyMDIwIDAwMDAwIG4gCjAwMDAwMDIwN   MDAwMTk5OSAwMDAwMCBuIAowMDAwMDAyMDIwIDAwMDAwIG4gCjAwMDAwMDIwN
 MDAwMDAwMjE0MiAwMDAwMCBuIAowMDAwMDAyMzA5IDAwMDAwIG4gCgp0cmFpb   MDAwMDAwMjE0MiAwMDAwMCBuIAowMDAwMDAyMzA5IDAwMDAwIG4gCgp0cmFpb
 IDkgMCBSIC9TaXplIDEzPj4KCnN0YXJ0eHJlZgoyMzkxCiUlRU9GCg==        IDkgMCBSIC9TaXplIDEzPj4KCnN0YXJ0eHJlZgoyMzkxCiUlRU9GCg==
+```
 
 Only 3 lines of the Base64 differ (marked in red), and there's where the magic happens.
 SHAttered already took it's first victim, WebKit's Apache SVN, you can read about it [here](https://arstechnica.com/security/2017/02/watershed-sha1-collision-just-broke-the-webkit-repository-others-may-follow/)
