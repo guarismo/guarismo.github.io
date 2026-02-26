@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ""
+title: "SANS Holiday Hack Challenge 2017 — Terminals"
 date: 2020-01-14T14:42:00Z
 author: gu4r15sm0
 category: misc
