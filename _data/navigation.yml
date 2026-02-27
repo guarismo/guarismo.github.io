@@ -31,6 +31,17 @@
         - title: Vuln Scanning
           tag: vulnerability-scanning
 
-- title: Miscellaneous
+- title: Agentic AI
+  url: /agentic-ai/
+  icon: "🤖"
+  children:
+    - title: Claude Code
+      tag: claude-code
+    - title: OpenClaw
+      tag: openclaw
+    - title: Penetration Testing Workflow
+      tag: pentest-workflow
+
+- title: Other Posts
   url: /misc/
   icon: "📝"
