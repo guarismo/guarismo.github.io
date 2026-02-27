@@ -1,0 +1,67 @@
+<div class="hero-banner">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay">
+    <h1 class="hero-title">THE INTERNET OF STUFF AND THINGS</h1>
+    <p class="hero-tagline">security · ctf · experiments</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var canvas = document.getElementById('hero-canvas');
+  var ctx = canvas.getContext('2d');
+
+  function resize() {
+    var w = canvas.offsetWidth;
+    var h = canvas.offsetHeight;
+    if (w > 0 && h > 0) {
+      canvas.width = w;
+      canvas.height = h;
+      // Reset columns on resize
+      columns = Math.floor(canvas.width / fontSize);
+      drops = [];
+      for (var i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -50;
+      }
+    }
+  }
+  window.addEventListener('resize', resize);
+
+  var chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+  var fontSize = 14;
+  var columns = 0;
+  var drops = [];
+
+  function draw() {
+    ctx.fillStyle = 'rgba(1, 5, 12, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + 'px monospace';
+
+    for (var i = 0; i < drops.length; i++) {
+      var char = chars[Math.floor(Math.random() * chars.length)];
+      var x = i * fontSize;
+      var y = drops[i] * fontSize;
+
+      // Leading character brighter
+      ctx.fillStyle = 'rgba(200, 240, 255, 0.95)';
+      ctx.fillText(char, x, y);
+
+      // Trail characters in cyan
+      ctx.fillStyle = 'rgba(119, 228, 255, 0.6)';
+      ctx.fillText(char, x, y - fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i] += 0.5;
+    }
+  }
+
+  // Start after layout is done
+  document.addEventListener('DOMContentLoaded', function() {
+    resize();
+    setInterval(draw, 50);
+  });
+})();
+</script>

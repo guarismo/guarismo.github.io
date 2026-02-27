@@ -4,19 +4,37 @@
   <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   {% seo %}
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
 </head>
 <body>
 
-  {% include sidebar.html %}
+  {% include nav-drawer.html %}
+
+  <div class="topbar" id="topbar">
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a class="topbar-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+  </div>
+
+  {% if page.url == "/" %}
+    {% include hero.html %}
+  {% endif %}
 
   <div class="main-content" id="main-content">
+    {% unless page.url == "/" %}
     <header class="page-header">
       <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
-      {% if site.description %}<p class="project-tagline">{{ site.description }}</p>{% endif %}
+      {% if site.description and page.url == "/" %}<p class="project-tagline">{{ site.description }}</p>{% endif %}
     </header>
+    {% endunless %}
 
     <main class="main-body">
       {{ content }}
@@ -30,46 +48,51 @@
   </div>
 
   <script>
-  // Sidebar toggle
+  // Drawer toggle
   const hamburger = document.getElementById('hamburger');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  const sidebarClose = document.getElementById('sidebar-close');
+  const drawer = document.getElementById('nav-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  const drawerClose = document.getElementById('drawer-close');
 
-  function openSidebar() {
-    sidebar.classList.add('open');
+  function openDrawer() {
+    drawer.classList.add('open');
     overlay.classList.add('open');
-    document.body.classList.add('sidebar-open');
+    document.body.classList.add('drawer-open');
   }
 
-  function closeSidebar() {
-    sidebar.classList.remove('open');
+  function closeDrawer() {
+    drawer.classList.remove('open');
     overlay.classList.remove('open');
-    document.body.classList.remove('sidebar-open');
+    document.body.classList.remove('drawer-open');
   }
 
-  hamburger.addEventListener('click', openSidebar);
-  overlay.addEventListener('click', closeSidebar);
-  sidebarClose.addEventListener('click', closeSidebar);
+  if (hamburger) hamburger.addEventListener('click', openDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
 
-  // Collapsible menu
+  // Collapsible menu — both top-level toggles and sub-toggles
+  function handleToggle(el, e) {
+    e.preventDefault();
+    const targetId = 'nav-' + el.dataset.toggle;
+    const target = document.getElementById(targetId);
+    const arrow = el.querySelector('.nav-arrow');
+
+    if (target) {
+      target.classList.toggle('expanded');
+      if (arrow) arrow.classList.toggle('expanded');
+
+      const state = JSON.parse(localStorage.getItem('navState') || '{}');
+      state[targetId] = target.classList.contains('expanded');
+      localStorage.setItem('navState', JSON.stringify(state));
+    }
+  }
+
   document.querySelectorAll('.nav-toggle').forEach(function(toggle) {
-    toggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = 'nav-' + this.dataset.toggle;
-      const target = document.getElementById(targetId);
-      const arrow = this.querySelector('.nav-arrow');
+    toggle.addEventListener('click', function(e) { handleToggle(this, e); });
+  });
 
-      if (target) {
-        target.classList.toggle('expanded');
-        arrow.classList.toggle('expanded');
-
-        // Save state
-        const state = JSON.parse(localStorage.getItem('navState') || '{}');
-        state[targetId] = target.classList.contains('expanded');
-        localStorage.setItem('navState', JSON.stringify(state));
-      }
-    });
+  document.querySelectorAll('.nav-sub-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function(e) { handleToggle(this, e); });
   });
 
   // Restore state
@@ -87,11 +110,6 @@
       }
     }
   });
-
-  // On desktop, sidebar is always visible
-  if (window.innerWidth > 768) {
-    sidebar.classList.add('open');
-  }
   </script>
 
 </body>

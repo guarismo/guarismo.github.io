@@ -1,0 +1,79 @@
+<nav class="nav-drawer" id="nav-drawer">
+  <div class="drawer-header">
+    <a class="drawer-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <button class="drawer-close" id="drawer-close" aria-label="Close menu">&times;</button>
+  </div>
+
+  <ul class="nav-list">
+    {% for item in site.data.navigation %}
+    <li class="nav-item{% if item.children %} has-children{% endif %}">
+
+      {% if item.children %}
+        {%- comment -%}Top-level collapsible: always href=void (no direct page){%- endcomment -%}
+        <a class="nav-link nav-toggle" href="javascript:void(0)" data-toggle="{{ item.title | slugify }}">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.title }}</span>
+          <span class="nav-arrow">▶</span>
+        </a>
+
+        <ul class="nav-children" id="nav-{{ item.title | slugify }}">
+          {% for child in item.children %}
+          <li class="nav-item{% if child.children %} has-children{% endif %}">
+
+            {% if child.tag %}
+              {%- comment -%}Tag-only child: anchor link to parent page{%- endcomment -%}
+              <a class="nav-link" href="{{ item.url | relative_url }}#{{ child.tag }}">{{ child.title }}</a>
+
+            {% elsif child.url and child.children %}
+              {%- comment -%}Child with url + sub-children: link row + expand arrow{%- endcomment -%}
+              <div class="nav-link-row">
+                <a class="nav-link nav-link-main" href="{{ child.url | relative_url }}">
+                  <span class="nav-icon">{{ child.icon }}</span>
+                  <span>{{ child.title }}</span>
+                </a>
+                <button class="nav-sub-toggle" data-toggle="{{ child.title | slugify }}" aria-label="Expand">
+                  <span class="nav-arrow">▶</span>
+                </button>
+              </div>
+
+              <ul class="nav-children nav-sub" id="nav-{{ child.title | slugify }}">
+                {% for subchild in child.children %}
+                <li class="nav-item">
+                  {% if subchild.url %}
+                    <a class="nav-link" href="{{ subchild.url | relative_url }}">{{ subchild.title }}</a>
+                  {% elsif subchild.tag %}
+                    <a class="nav-link" href="{{ child.url | relative_url }}#{{ subchild.tag }}">{{ subchild.title }}</a>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+
+            {% elsif child.url %}
+              {%- comment -%}Plain child url{%- endcomment -%}
+              <a class="nav-link" href="{{ child.url | relative_url }}">
+                <span class="nav-icon">{{ child.icon }}</span>
+                <span>{{ child.title }}</span>
+              </a>
+            {% endif %}
+
+          </li>
+          {% endfor %}
+        </ul>
+
+      {% else %}
+        <a class="nav-link" href="{{ item.url | relative_url }}">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.title }}</span>
+        </a>
+      {% endif %}
+
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="drawer-footer">
+    <small>© {{ 'now' | date: "%Y" }} {{ site.author.name }}</small>
+  </div>
+</nav>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
